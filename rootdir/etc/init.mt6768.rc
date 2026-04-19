@@ -2,6 +2,13 @@ import /vendor/etc/init/init.wmt_drv.rc
 import /vendor/etc/init/init.wlan_drv.rc
 import /vendor/etc/init/init.md_apps.rc
 import /vendor/etc/init/init.cccimdinit.rc
+import /vendor/etc/init/hw/init.connectivity.rc
+import /vendor/etc/init/hw/init_connectivity.rc
+import /vendor/etc/init/hw/init.connectivity.common.rc
+import /vendor/etc/init/hw/init.mt6768.usb.rc
+import /vendor/etc/init/hw/init.sensor_1_0.rc
+import /vendor/etc/init/hw/init.modem.rc
+import /vendor/etc/init/hw/init.project.rc
 
 on early-init
     setprop ro.board.platform mt6768
