@@ -1,4 +1,5 @@
 DEVICE_PATH := device/infinix/X663
+KERNEL_PATH := kernel/infinix/X663
 
 -include vendor/infinix/X663/BoardConfigVendor.mk
 
@@ -46,8 +47,9 @@ BOARD_DTB_OFFSET := 0x4bc80000
 BOARD_INCLUDE_DTB_IN_BOOTIMG := true
 # X663 uses a dedicated dtbo partition; do not rely on boot image for overlays.
 BOARD_KERNEL_SEPARATED_DTBO := true
-TARGET_PREBUILT_KERNEL := $(DEVICE_PATH)/prebuilt/Image.gz
-BOARD_PREBUILT_DTBOIMAGE := $(DEVICE_PATH)/prebuilt/dtbo.img
+TARGET_PREBUILT_DTB := $(KERNEL_PATH)/dtb
+TARGET_PREBUILT_KERNEL := $(KERNEL_PATH)/Image.gz
+BOARD_PREBUILT_DTBOIMAGE := $(KERNEL_PATH)/dtbo.img
 BOARD_DTBOIMG_PARTITION_SIZE := 8388608
 
 BOARD_MKBOOTIMG_ARGS += --header_version $(BOARD_BOOT_HEADER_VERSION)
