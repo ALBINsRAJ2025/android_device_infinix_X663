@@ -1,0 +1,5 @@
+/dev/block/by-name/system_a      /system         ext4  ro,barrier=1                               wait,logical,first_stage_mount,slotselect,avb=vbmeta_system
+/dev/block/by-name/system_ext_a  /system_ext     ext4  ro,barrier=1                               wait,logical,first_stage_mount,slotselect,avb=vbmeta_system
+/dev/block/by-name/product_a     /product        ext4  ro,barrier=1                               wait,logical,first_stage_mount,slotselect,avb=vbmeta_system
+/dev/block/by-name/vendor_a      /vendor         ext4  ro,barrier=1                               wait,logical,first_stage_mount,slotselect,avb=vbmeta
+/dev/block/by-name/metadata      /metadata       ext4  noatime,nosuid,nodev,discard               wait,formattable,first_stage_mount

@@ -1,0 +1,6 @@
+on early-init
+    setprop ro.board.platform mt6768
+
+on boot
+    # Placeholder service sequencing; refine from stock init extraction in P7.
+    setprop ro.product.vendor.device Infinix-X663
