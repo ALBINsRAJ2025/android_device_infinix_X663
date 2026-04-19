@@ -1,5 +1,7 @@
 DEVICE_PATH := device/infinix/X663
 
+-include vendor/infinix/X663/BoardConfigVendor.mk
+
 # A/B and Virtual A/B
 AB_OTA_UPDATER := true
 PRODUCT_VIRTUAL_AB_OTA := true
