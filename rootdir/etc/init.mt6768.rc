@@ -1,6 +1,15 @@
+import /vendor/etc/init/init.wmt_drv.rc
+import /vendor/etc/init/init.wlan_drv.rc
+import /vendor/etc/init/init.md_apps.rc
+import /vendor/etc/init/init.cccimdinit.rc
+
 on early-init
     setprop ro.board.platform mt6768
 
 on boot
-    # Placeholder service sequencing; refine from stock init extraction in P7.
-    setprop ro.product.vendor.device Infinix-X663
+    # Keep stock modem metadata visible for bringup diagnostics.
+    setprop ro.vendor.md_apps.support 1
+
+on property:vendor.connsys.driver.ready=yes
+    # Enforce Wi-Fi driver load order after connsys readiness.
+    start wlan_assistant
