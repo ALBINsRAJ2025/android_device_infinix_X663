@@ -4,6 +4,21 @@
 
 LOCAL_PATH := device/infinix/X663
 
+# Stock vendor payload
+$(call inherit-product, vendor/infinix/X663/X663-vendor.mk)
+
+# The stock vendor image carries empty fs_config, passwd and group files.
+# Keep the platform-generated copies so the ownership and mode data from
+# configs/fs_config is available to the image builder and to libcutils.
+PRODUCT_COPY_FILES := $(filter-out \
+    vendor/infinix/X663/proprietary/etc/fs_config_files:vendor/etc/fs_config_files \
+    vendor/infinix/X663/proprietary/etc/fs_config_dirs:vendor/etc/fs_config_dirs \
+    vendor/infinix/X663/proprietary/etc/passwd:vendor/etc/passwd \
+    vendor/infinix/X663/proprietary/etc/group:vendor/etc/group \
+    vendor/infinix/X663/proprietary/odm/etc/passwd:vendor/odm/etc/passwd \
+    vendor/infinix/X663/proprietary/odm/etc/group:vendor/odm/etc/group \
+    ,$(PRODUCT_COPY_FILES))
+
 # Framework resource overlay
 DEVICE_PACKAGE_OVERLAYS += $(LOCAL_PATH)/overlay
 
@@ -27,8 +42,37 @@ ifeq ($(PLATFORM_SDK_VERSION),32)
 PRODUCT_EXTRA_VNDK_VERSIONS := 31
 endif
 
-# The stock vendor image carries its own precompiled policy.
+# The vendor tree installs the stock vendor policy, context files and
+# precompiled policy. Disable AOSP's precompiled policy and filter the AOSP
+# vendor policy package; otherwise it regenerates platform-only files over
+# the stock policy.
 PRODUCT_PRECOMPILED_SEPOLICY := false
+
+# These platform vendor packages would overwrite binaries, libraries or
+# metadata supplied by the stock vendor tree.
+PRODUCT_PACKAGES := $(filter-out \
+    selinux_policy_nonsystem \
+    vendor_compatibility_matrix.xml \
+    android.hardware.media.omx@1.0-service \
+    boringssl_self_test_vendor \
+    dumpsys_vendor \
+    applypatch \
+    gralloc.default \
+    shell_and_utilities_vendor \
+    libbundlewrapper \
+    libclearkeycasplugin \
+    libdownmix \
+    libdrmclearkeyplugin \
+    libdynproc \
+    libeffectproxy \
+    libeffects \
+    libhapticgenerator \
+    libldnhncr \
+    libreference-ril \
+    libreverbwrapper \
+    libril \
+    libvisualizer \
+    ,$(PRODUCT_PACKAGES))
 
 # First-stage fstab for recovery-as-boot
 PRODUCT_COPY_FILES += \

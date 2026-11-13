@@ -7,6 +7,8 @@
 
 DEVICE_PATH := device/infinix/X663
 
+TARGET_FS_CONFIG_GEN := $(DEVICE_PATH)/configs/fs_config
+
 -include vendor/infinix/X663/BoardConfigVendor.mk
 
 # Architecture
@@ -77,6 +79,7 @@ BOARD_BOOTIMAGE_PARTITION_SIZE := 33554432
 BOARD_SYSTEMIMAGE_FILE_SYSTEM_TYPE := ext4
 BOARD_SYSTEM_EXTIMAGE_FILE_SYSTEM_TYPE := ext4
 BOARD_PRODUCTIMAGE_FILE_SYSTEM_TYPE := ext4
+BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := ext4
 BOARD_USERDATAIMAGE_FILE_SYSTEM_TYPE := f2fs
 
 TARGET_USERIMAGES_USE_EXT4 := true
@@ -158,11 +161,17 @@ BOARD_AVB_BOOT_ROLLBACK_INDEX_LOCATION := 3
 
 # VNDK
 #
-# The stock vendor image is VNDK 31. AOSP 12 uses v31 as current; 12L uses
-# v32, so install the v31 snapshot for 12L builds.
+# The stock vendor blobs are built against VNDK 31. AOSP 12 uses 31 as
+# current; 12L uses 32, so pin the vendor build to 31 on 12L builds.
+ifeq ($(PLATFORM_SDK_VERSION),32)
+BOARD_VNDK_VERSION := 31
+else
 BOARD_VNDK_VERSION := current
+endif
 
 # Vendor image
 #
-# The stock vendor image preserves MTK policy, capabilities and symlinks.
-BOARD_PREBUILT_VENDORIMAGE := vendor/infinix/X663/vendor.img
+# The vendor partition is built from vendor/infinix/X663. The stock vendor
+# tree supplies the MTK binaries, SELinux policy, context files and the
+# precompiled policy; AOSP must not generate a replacement vendor policy.
+VENDOR_SECURITY_PATCH := 2023-09-05
