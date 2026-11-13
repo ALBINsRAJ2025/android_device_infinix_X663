@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (C) 2026 ALBINsRAJ2025
 # Vendor properties for the Infinix Note 11 (X663).
 #
 # Derived from the stock vendor build.prop. Partition metadata and the

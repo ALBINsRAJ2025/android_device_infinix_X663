@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (C) 2026 ALBINsRAJ2025
 #
 # device.mk - Infinix Note 11 (X663)
 #
@@ -7,7 +9,7 @@ LOCAL_PATH := device/infinix/X663
 # Stock vendor payload
 $(call inherit-product, vendor/infinix/X663/X663-vendor.mk)
 
-# The stock vendor image carries empty fs_config, passwd and group files.
+# The stock vendor tree carries empty fs_config, passwd and group files.
 # Keep the platform-generated copies so the ownership and mode data from
 # configs/fs_config is available to the image builder and to libcutils.
 PRODUCT_COPY_FILES := $(filter-out \
@@ -36,7 +38,7 @@ PRODUCT_PACKAGES += \
 PRODUCT_SHIPPING_API_LEVEL := 30
 PRODUCT_CHARACTERISTICS := phone
 
-# The stock vendor image is VNDK 31. AOSP 12 uses v31 as current; 12L uses
+# The stock vendor tree is VNDK 31. AOSP 12 uses v31 as current; 12L uses
 # v32, so install the v31 snapshot for 12L builds.
 ifeq ($(PLATFORM_SDK_VERSION),32)
 PRODUCT_EXTRA_VNDK_VERSIONS := 31

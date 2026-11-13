@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- Copyright (C) 2026 ALBINsRAJ2025 -->
 <!-- Power profile for the Infinix Note 11 (X663), based on the stock
      vendor overlay. CPU topology: 6x Cortex-A55 + 2x Cortex-A75. -->
 <device name="Android">

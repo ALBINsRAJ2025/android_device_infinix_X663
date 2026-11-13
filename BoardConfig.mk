@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (C) 2026 ALBINsRAJ2025
 #
 # BoardConfig.mk - Infinix Note 11 (X663)
 #
