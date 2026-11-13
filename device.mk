@@ -19,7 +19,21 @@ PRODUCT_COPY_FILES := $(filter-out \
     vendor/infinix/X663/proprietary/etc/group:vendor/etc/group \
     vendor/infinix/X663/proprietary/odm/etc/passwd:vendor/odm/etc/passwd \
     vendor/infinix/X663/proprietary/odm/etc/group:vendor/odm/etc/group \
+    vendor/infinix/X663/proprietary/etc/fstab.mt6768:vendor/etc/fstab.mt6768 \
+    frameworks/native/data/etc/handheld_core_hardware.xml:vendor/etc/permissions/handheld_core_hardware.xml \
+    vendor/infinix/X663/proprietary/overlay/FrameworkResOverlay/FrameworkResOverlay.apk:vendor/overlay/FrameworkResOverlay/FrameworkResOverlay.apk \
     ,$(PRODUCT_COPY_FILES))
+
+# The stock FrameworkResOverlay is written for the Transsion framework. It
+# points config_dozeComponent at com.transsion.aod and uses Transsion-only
+# resource names. The device overlay below carries the equivalent AOSP values,
+# so do not install the vendor RRO that would override them at runtime.
+
+# The stock vendor init reads /vendor/etc/fstab.mt6768 during the early and
+# late mount phases. Use the same AVB-relaxed fstab as the first-stage ramdisk
+# so both mount passes agree.
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/rootdir/etc/fstab.mt6768:$(TARGET_COPY_OUT_VENDOR)/etc/fstab.mt6768
 
 # Framework resource overlay
 DEVICE_PACKAGE_OVERLAYS += $(LOCAL_PATH)/overlay
@@ -55,12 +69,18 @@ PRODUCT_PRECOMPILED_SEPOLICY := false
 PRODUCT_PACKAGES := $(filter-out \
     selinux_policy_nonsystem \
     vendor_compatibility_matrix.xml \
+    android.hardware.cas@1.2-service \
     android.hardware.media.omx@1.0-service \
+    audio.primary.default \
     boringssl_self_test_vendor \
     dumpsys_vendor \
     applypatch \
     gralloc.default \
+    libaudiopreprocessing \
+    local_time.default \
+    power.default \
     shell_and_utilities_vendor \
+    vibrator.default \
     libbundlewrapper \
     libclearkeycasplugin \
     libdownmix \
@@ -91,6 +111,3 @@ PRODUCT_PACKAGES += \
     init.recovery.mt6768.rc \
     mtk_plpath_utils \
     mtk-plpath-utils.rc
-
-# System properties
-TARGET_SYSTEM_PROP := $(LOCAL_PATH)/system.prop

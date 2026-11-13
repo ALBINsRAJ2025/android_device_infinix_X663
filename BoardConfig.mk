@@ -10,6 +10,7 @@
 DEVICE_PATH := device/infinix/X663
 
 TARGET_FS_CONFIG_GEN := $(DEVICE_PATH)/configs/fs_config
+TARGET_VENDOR_PROP += $(DEVICE_PATH)/vendor.prop
 
 -include vendor/infinix/X663/BoardConfigVendor.mk
 

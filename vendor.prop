@@ -372,7 +372,6 @@ ro.vendor.iomanager.support=1
 persist.vendor.iomanager.gc=1
 persist.vendor.iomanager.throttle=1
 ro.vendor.tran.version.release=X663-H6915ABCEFGHIO-S-GL-230916V454
-ro.sf.lcd_density=480
 qemu.hw.mainkeys=0
 ro.vendor.tran.otg_lpo_support=1
 ro.vendor.tran.sw_otg_support=1
