@@ -1,76 +1,116 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- SPDX-License-Identifier: Apache-2.0 -->
 <!-- Copyright (C) 2026 ALBINsRAJ2025 -->
-<!-- Power profile for the Infinix Note 11 (X663), derived from the MT6768
-     topology (6x Cortex-A55 + 2x Cortex-A75) and the 5000 mAh battery.
-     The stock vendor overlay contains only a generic placeholder profile. -->
+<!-- Power profile for the Infinix Note 11 (X663).
+     SoC: MediaTek Helio G88 (MT6769H; platform family MT6768).
+     CPU: cluster 0 = 6x Cortex-A55 (LITTLE, up to 1700000 kHz),
+          cluster 1 = 2x Cortex-A75 (big, up to 2000000 kHz).
+     Battery: 5000 mAh.
+     Keyed for the Android 12 PowerProfile implementation, which reads
+     cpu.clusters.cores / cpu.cluster_power.cluster* / cpu.core_speeds.cluster* /
+     cpu.core_power.cluster*; the legacy cpu.speeds.cluster* and cpu.active.cluster*
+     arrays are ignored by Android 12. -->
 <device name="Android">
-    <item name="ambient.on">0.1</item>
-    <item name="screen.on">0.1</item>
-    <item name="screen.full">0.1</item>
-    <item name="bluetooth.active">0.1</item>
-    <item name="bluetooth.on">0.1</item>
-    <item name="wifi.on">0.1</item>
-    <item name="wifi.active">0.1</item>
+    <item name="ambient.on">30.0</item>
+    <item name="screen.on">95.5</item>
+    <item name="screen.full">401.5</item>
+    <item name="bluetooth.on">1.6</item>
+    <item name="bluetooth.active">25.0</item>
+    <item name="wifi.on">0.14</item>
+    <item name="wifi.active">169.0</item>
     <item name="wifi.scan">0.1</item>
-    <item name="audio">0.1</item>
-    <item name="video">0.1</item>
-    <item name="camera.flashlight">0.1</item>
-    <item name="camera.avg">0.1</item>
-    <item name="gps.on">0.1</item>
-    <item name="radio.active">0.1</item>
+    <item name="audio">40.0</item>
+    <item name="video">32.5</item>
+    <item name="camera.flashlight">144.5</item>
+    <item name="camera.avg">339.0</item>
+    <item name="gps.on">0.3</item>
+    <item name="radio.active">210.0</item>
     <item name="radio.scanning">0.1</item>
     <array name="radio.on">
-        <value>0.2</value>
-        <value>0.1</value>
+        <value>9.5</value>
+        <value>9.5</value>
     </array>
     <array name="cpu.clusters.cores">
         <value>6</value>
         <value>2</value>
     </array>
-    <array name="cpu.speeds.cluster0">
-        <value>400000</value>
-        <value>1000000</value>
-        <value>1800000</value>
-    </array>
-    <array name="cpu.active.cluster0">
-        <value>0.1</value>
-        <value>0.2</value>
-        <value>0.3</value>
-    </array>
-    <array name="cpu.active.cluster1">
-        <value>0.4</value>
-        <value>0.5</value>
-        <value>0.6</value>
-        <value>0.7</value>
-    </array>
-    <item name="cpu.idle">1.11</item>
-    <item name="cpu.suspend">5</item>
-    <item name="cpu.active">2.55</item>
-    <item name="cpu.cluster_power.cluster0">2.11</item>
-    <item name="cpu.cluster_power.cluster1">2.22</item>
+    <item name="cpu.cluster_power.cluster0">3.0</item>
+    <item name="cpu.cluster_power.cluster1">7.0</item>
     <array name="cpu.core_speeds.cluster0">
-        <value>400000</value>
-        <value>1000000</value>
-        <value>1800000</value>
-    </array>
-    <array name="cpu.core_speeds.cluster1">
-        <value>400000</value>
-        <value>1000000</value>
-        <value>1800000</value>
-        <value>2000000</value>
+        <value>500000</value>
+        <value>774000</value>
+        <value>850000</value>
+        <value>900000</value>
+        <value>950000</value>
+        <value>999000</value>
+        <value>1050000</value>
+        <value>1100000</value>
+        <value>1175000</value>
+        <value>1275000</value>
+        <value>1325000</value>
+        <value>1375000</value>
+        <value>1450000</value>
+        <value>1500000</value>
+        <value>1625000</value>
+        <value>1700000</value>
     </array>
     <array name="cpu.core_power.cluster0">
-        <value>10</value>
-        <value>20</value>
-        <value>30</value>
+        <value>0.9</value>
+        <value>1.2</value>
+        <value>1.4</value>
+        <value>1.6</value>
+        <value>1.8</value>
+        <value>2.0</value>
+        <value>2.2</value>
+        <value>2.4</value>
+        <value>2.9</value>
+        <value>3.5</value>
+        <value>3.8</value>
+        <value>4.1</value>
+        <value>4.6</value>
+        <value>4.9</value>
+        <value>5.7</value>
+        <value>6.4</value>
+    </array>
+    <array name="cpu.core_speeds.cluster1">
+        <value>850000</value>
+        <value>909000</value>
+        <value>998000</value>
+        <value>1087000</value>
+        <value>1176000</value>
+        <value>1295000</value>
+        <value>1354000</value>
+        <value>1443000</value>
+        <value>1532000</value>
+        <value>1621000</value>
+        <value>1710000</value>
+        <value>1800000</value>
+        <value>1850000</value>
+        <value>1900000</value>
+        <value>1950000</value>
+        <value>2000000</value>
     </array>
     <array name="cpu.core_power.cluster1">
-        <value>25</value>
-        <value>35</value>
-        <value>50</value>
-        <value>60</value>
+        <value>2.6</value>
+        <value>3.0</value>
+        <value>3.4</value>
+        <value>4.2</value>
+        <value>4.8</value>
+        <value>6.0</value>
+        <value>6.6</value>
+        <value>7.6</value>
+        <value>8.6</value>
+        <value>9.6</value>
+        <value>10.6</value>
+        <value>11.4</value>
+        <value>12.0</value>
+        <value>12.6</value>
+        <value>13.2</value>
+        <value>14.0</value>
     </array>
+    <item name="cpu.idle">4.1</item>
+    <item name="cpu.suspend">5.0</item>
+    <item name="cpu.active">2.55</item>
     <array name="memory.bandwidths">
         <value>22.7</value>
     </array>
@@ -78,13 +118,13 @@
     <item name="wifi.controller.idle">0</item>
     <item name="wifi.controller.rx">0</item>
     <item name="wifi.controller.tx">0</item>
-    <array name="wifi.controller.tx_levels"/>
+    <array name="wifi.controller.tx_levels" />
     <item name="wifi.controller.voltage">0</item>
     <array name="wifi.batchedscan">
-        <value>.0002</value>
-        <value>.002</value>
-        <value>.02</value>
-        <value>.2</value>
+        <value>0.0002</value>
+        <value>0.002</value>
+        <value>0.02</value>
+        <value>0.2</value>
         <value>2</value>
     </array>
     <item name="modem.controller.sleep">0</item>
