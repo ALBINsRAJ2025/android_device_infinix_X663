@@ -44,10 +44,12 @@ PRODUCT_BUILD_SUPER_PARTITION := true
 $(call inherit-product, $(SRC_TARGET_DIR)/product/virtual_ab_ota/launch.mk)
 PRODUCT_VIRTUAL_AB_COMPRESSION := true
 
+# AOSP 12's libsnapshot defines a single snapuserd module with ramdisk,
+# vendor_ramdisk and recovery availability; snapuserd.ramdisk and
+# snapuserd.recovery are install-path labels, not module names. The
+# first-stage copy is handled by the recovery-as-boot packaging below.
 PRODUCT_PACKAGES += \
-    snapuserd \
-    snapuserd.ramdisk \
-    snapuserd.recovery
+    snapuserd
 
 PRODUCT_SHIPPING_API_LEVEL := 30
 PRODUCT_CHARACTERISTICS := phone
@@ -111,3 +113,15 @@ PRODUCT_PACKAGES += \
     init.recovery.mt6768.rc \
     mtk_plpath_utils \
     mtk-plpath-utils.rc
+
+# Prebuilt kernel for plain AOSP 12 trees.
+#
+# AOSP 12 removed build/make/core/tasks/kernel.mk, so TARGET_PREBUILT_KERNEL
+# (set in BoardConfig.mk) has no consumer there and $(PRODUCT_OUT)/kernel is
+# never created. LineageOS 19.1 re-adds kernel.mk through its build fork and
+# owns that target, so the copy file is only added when kernel.mk is absent.
+# Keeping one producer avoids a duplicate rule for $(PRODUCT_OUT)/kernel.
+ifeq ($(wildcard vendor/lineage/build/tasks/kernel.mk),)
+PRODUCT_COPY_FILES += \
+    kernel/infinix/X663/Image.gz:kernel
+endif

@@ -39,7 +39,13 @@ TARGET_SCREEN_DENSITY := 480
 # Platform
 TARGET_BOARD_PLATFORM := mt6768
 BOARD_HAS_MTK_HARDWARE := true
-TARGET_BOOTLOADER_BOARD_NAME := mt6768
+# ro.product.board is generated from this value. The stock vendor image
+# reports Infinix-X663 and four vendor libraries read that property
+# (libancbase_848, libanc_dc_base, libsmartdetector, librmsclib1), so keep
+# the stock value instead of the SoC name. vendor.prop carries the same
+# value; changing only one of the two aborts the build with a duplicate
+# sysprop error.
+TARGET_BOOTLOADER_BOARD_NAME := Infinix-X663
 TARGET_NO_BOOTLOADER := true
 TARGET_NO_RADIOIMAGE := true
 
