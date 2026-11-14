@@ -125,3 +125,8 @@ ifeq ($(wildcard vendor/lineage/build/tasks/kernel.mk),)
 PRODUCT_COPY_FILES += \
     kernel/infinix/X663/Image.gz:kernel
 endif
+
+# First-boot debug logging for the X663 (userdebug/eng only).
+# Remove this include, or set X663_DEBUG_BOOTLOOP := false before it, once the
+# device reaches the home screen.  See debug/debug-bootloop.mk.
+include $(LOCAL_PATH)/debug/debug-bootloop.mk
