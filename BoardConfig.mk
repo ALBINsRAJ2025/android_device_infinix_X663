@@ -16,14 +16,14 @@ TARGET_VENDOR_PROP += $(DEVICE_PATH)/vendor.prop
 
 # Architecture
 TARGET_ARCH := arm64
-TARGET_ARCH_VARIANT := armv8-a
+TARGET_ARCH_VARIANT := armv8-2a-dotprod
 TARGET_CPU_ABI := arm64-v8a
 TARGET_CPU_ABI2 :=
 TARGET_CPU_VARIANT := generic
 TARGET_CPU_VARIANT_RUNTIME := cortex-a75
 
 TARGET_2ND_ARCH := arm
-TARGET_2ND_ARCH_VARIANT := armv8-a
+TARGET_2ND_ARCH_VARIANT := armv8-2a
 TARGET_2ND_CPU_ABI := armeabi-v7a
 TARGET_2ND_CPU_ABI2 := armeabi
 TARGET_2ND_CPU_VARIANT := generic
@@ -38,11 +38,15 @@ TARGET_SCREEN_DENSITY := 480
 
 # Platform
 TARGET_BOARD_PLATFORM := mt6768
+BOARD_HAS_MTK_HARDWARE := true
 TARGET_BOOTLOADER_BOARD_NAME := mt6768
 TARGET_NO_BOOTLOADER := true
 TARGET_NO_RADIOIMAGE := true
 
 # Kernel
+# Verified against the stock X663 boot.img: ANDROID! header version 2 and
+# 2048-byte page size. Do not switch to header v4 or 4096-byte pages; the
+# stock MT6768 bootloader of this device parses the v2 header only.
 BOARD_BOOT_HEADER_VERSION := 2
 BOARD_KERNEL_IMAGE_NAME := Image.gz
 
