@@ -15,7 +15,10 @@ symlinks; this tree ships what the build installs, under the stock names.
 | `root/system/etc/init/mtk-plpath-utils.rc` | `/system/etc/init/mtk-plpath-utils.rc` |
 
 First-stage tools (`e2fsck`, `snapuserd`, `fstab.mt6768`) are **not** shipped:
-the build generates its own first-stage ramdisk from this device tree.
+the build generates its own first-stage ramdisk from this device tree
+(`e2fsck_ramdisk` from `virtual_ab_ota/launch.mk` and `snapuserd` are installed
+into `recovery/root/first_stage_ramdisk/system/bin`, and `device.mk` copies the
+fstab to `recovery/root/first_stage_ramdisk/`).
 
 ## Deviations from stock
 

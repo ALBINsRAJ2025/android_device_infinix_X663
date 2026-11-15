@@ -41,7 +41,7 @@ genfscon/type_transition statements, 0 missing / 0 extra.
 ```make
 X663_SEPOLICY_PORT ?= false
 ifeq ($(X663_SEPOLICY_PORT),true)
-BOARD_VENDOR_SEPOLICY_DIRS := $(LOCAL_PATH)/sepolicy
+BOARD_VENDOR_SEPOLICY_DIRS += $(DEVICE_PATH)/sepolicy
 BOARD_SEPOLICY_VERS := 31
 endif
 ```
