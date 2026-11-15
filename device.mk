@@ -10,16 +10,19 @@ LOCAL_PATH := device/infinix/X663
 $(call inherit-product, vendor/infinix/X663/X663-vendor.mk)
 
 # Stock fs_config/passwd/group are empty; keep the platform-generated copies.
+# The destinations must be written with $(TARGET_COPY_OUT_VENDOR): at product
+# parse time it is still the ||VENDOR-PATH-PH|| placeholder, so a literal
+# "vendor/" would match nothing and the stock copies would stay in the list.
 PRODUCT_COPY_FILES := $(filter-out \
-    vendor/infinix/X663/proprietary/etc/fs_config_files:vendor/etc/fs_config_files \
-    vendor/infinix/X663/proprietary/etc/fs_config_dirs:vendor/etc/fs_config_dirs \
-    vendor/infinix/X663/proprietary/etc/passwd:vendor/etc/passwd \
-    vendor/infinix/X663/proprietary/etc/group:vendor/etc/group \
-    vendor/infinix/X663/proprietary/odm/etc/passwd:vendor/odm/etc/passwd \
-    vendor/infinix/X663/proprietary/odm/etc/group:vendor/odm/etc/group \
-    vendor/infinix/X663/proprietary/etc/fstab.mt6768:vendor/etc/fstab.mt6768 \
-    frameworks/native/data/etc/handheld_core_hardware.xml:vendor/etc/permissions/handheld_core_hardware.xml \
-    vendor/infinix/X663/proprietary/overlay/FrameworkResOverlay/FrameworkResOverlay.apk:vendor/overlay/FrameworkResOverlay/FrameworkResOverlay.apk \
+    vendor/infinix/X663/proprietary/etc/fs_config_files:$(TARGET_COPY_OUT_VENDOR)/etc/fs_config_files \
+    vendor/infinix/X663/proprietary/etc/fs_config_dirs:$(TARGET_COPY_OUT_VENDOR)/etc/fs_config_dirs \
+    vendor/infinix/X663/proprietary/etc/passwd:$(TARGET_COPY_OUT_VENDOR)/etc/passwd \
+    vendor/infinix/X663/proprietary/etc/group:$(TARGET_COPY_OUT_VENDOR)/etc/group \
+    vendor/infinix/X663/proprietary/odm/etc/passwd:$(TARGET_COPY_OUT_VENDOR)/odm/etc/passwd \
+    vendor/infinix/X663/proprietary/odm/etc/group:$(TARGET_COPY_OUT_VENDOR)/odm/etc/group \
+    vendor/infinix/X663/proprietary/etc/fstab.mt6768:$(TARGET_COPY_OUT_VENDOR)/etc/fstab.mt6768 \
+    frameworks/native/data/etc/handheld_core_hardware.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/handheld_core_hardware.xml \
+    vendor/infinix/X663/proprietary/overlay/FrameworkResOverlay/FrameworkResOverlay.apk:$(TARGET_COPY_OUT_VENDOR)/overlay/FrameworkResOverlay/FrameworkResOverlay.apk \
     ,$(PRODUCT_COPY_FILES))
 
 # Stock FrameworkResOverlay is Transsion-specific; do not install it.
