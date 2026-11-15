@@ -182,6 +182,26 @@ else
 BOARD_VNDK_VERSION := current
 endif
 
+# Vendor SELinux policy port
+#
+# The stock vendor policy is MediaTek's Android 12 platform policy (version 31)
+# plus the vendor rules; only the vendor rules are in the device's vendor tree,
+# and AOSP 12 compiles the vendor policy from .te sources.  See
+# sepolicy/README.md for the full analysis and the conversion.
+#
+#   false (default) - platform policy + AOSP's generic vendor policy.  The
+#     stock vendor_sepolicy.cil / vendor_file_contexts blobs are inert; the
+#     missing vendor rules show up as avc: denied entries on the device.
+#   true - compile the policy from sepolicy/vendor.te; the first build reports
+#     the symbols that only MediaTek's platform policy provided, and they are
+#     added to sepolicy/mtk_platform.te one by one.
+X663_SEPOLICY_PORT ?= false
+ifeq ($(X663_SEPOLICY_PORT),true)
+BOARD_VENDOR_SEPOLICY_DIRS := $(LOCAL_PATH)/sepolicy
+# the stock vendor policy was written against platform policy version 31
+BOARD_SEPOLICY_VERS := 31
+endif
+
 # Vendor image
 #
 # The vendor partition is built from vendor/infinix/X663. The stock vendor

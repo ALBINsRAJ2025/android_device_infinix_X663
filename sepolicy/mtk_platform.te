@@ -1,0 +1,17 @@
+# SPDX-License-Identifier: Apache-2.0
+#
+# MediaTek platform symbols that the ported vendor policy needs but that the
+# AOSP / LineageOS platform policy does not provide.
+#
+# The stock vendor policy was written against MediaTek's Android 12 platform
+# policy (version 31).  This file holds the declarations that were needed to
+# make the stock CIL compile, so that the device policy stays self-contained.
+#
+# Add one declaration per missing symbol, each with the build log line that
+# produced it:
+#
+#   # <log line from the build>
+#   type hal_something;
+#   typeattribute hal_something hal_something_server;
+#
+# Leave it empty when the platform already provides everything.

@@ -42,14 +42,70 @@ purpose for now: the conversion and the symbol-by-symbol compile iteration
 are tracked in `PENDING.md`, and shipping a half-converted policy would break
 the build.
 
-## Planned contents
+## Contents
 
 ```
 sepolicy/
-├── README.md        this file
-├── vendor.te         converted from the stock vendor_sepolicy.cil
-└── mtk_platform.te   the MTK platform symbols the vendor policy needs
+├── README.md              this file
+├── convert_cil_to_te.py   converts the stock vendor_sepolicy.cil to .te
+├── aosp_provided_types.txt  AOSP 12.1 types (declarations to skip)
+├── aosp_provided_attrs.txt  AOSP 12.1 attributes (declarations to skip)
+├── vendor.te              the converted vendor policy (14,846 lines)
+└── mtk_platform.te        MTK platform symbols the policy needs (add here)
 ```
+
+## The conversion
+
+`vendor.te` is generated from the stock `vendor_sepolicy.cil` by
+`convert_cil_to_te.py`:
+
+```bash
+python3 sepolicy/convert_cil_to_te.py \
+    /sdcard/x663project/stock_firmware/unpacked/sepolicy/vendor_sepolicy.cil \
+    sepolicy/vendor.te \
+    --types sepolicy/aosp_provided_types.txt \
+    --attrs sepolicy/aosp_provided_attrs.txt
+```
+
+What it does:
+
+* keeps every `allow`, `dontaudit`, `allowxperm` and `type_transition` rule;
+* keeps every `genfscon` with its full context (`u:object_r:TYPE:s0`);
+* emits the `type` / `typeattribute` declarations, skipping the ones AOSP
+  12.1 already provides (124 types, 8 attributes) - duplicates abort the
+  policy build;
+* converts `typeattributeset A (B …)` into `typeattribute B A;`;
+* drops the `roletype` statements (AOSP has the single role `r`);
+* drops the `neverallow` statements (AOSP runs the neverallow check
+  separately, and the CIL already carries the platform result);
+* expands the MediaTek `typealias`/`typealiasactual` pair.
+
+**Verified by rule equivalence** against the stock CIL: 8,948 allow/dontaudit/
+allowxperm rules and 919 genfscon/type_transition statements, with **0 missing
+and 0 extra**.  Re-run the equivalence check after every regeneration.
+
+## Enabling the port
+
+`BoardConfig.mk` gates the port:
+
+```make
+X663_SEPOLICY_PORT ?= false
+ifeq ($(X663_SEPOLICY_PORT),true)
+BOARD_VENDOR_SEPOLICY_DIRS := $(LOCAL_PATH)/sepolicy
+BOARD_SEPOLICY_VERS := 31
+endif
+```
+
+With the gate **off** (the default) the build uses the platform policy plus
+AOSP's generic vendor policy, the stock `vendor_sepolicy.cil` and
+`vendor_file_contexts` blobs stay inert, and the missing vendor rules appear
+as `avc: denied` entries on the device - the list to work through.
+
+With the gate **on** the policy is compiled from `vendor.te`.  The first build
+will report every symbol that only MediaTek's platform policy provided; add
+each one to `mtk_platform.te` (with the log line) and rebuild until it
+compiles.  That is the boot-stage iteration: the denied rules from the
+logcat of the default build become the rules to add.
 
 ## Planned wiring
 
