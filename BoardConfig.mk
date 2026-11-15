@@ -175,7 +175,7 @@ X663_SEPOLICY_PORT ?= false
 X663_SELINUX_PERMISSIVE ?= false
 
 X663_SEPOLICY_DIRS :=
-ifneq ($(X663_SEPOLICY_PORT),false)
+ifeq ($(X663_SEPOLICY_PORT),true)
 X663_SEPOLICY_DIRS += $(DEVICE_PATH)/sepolicy
 # the stock vendor policy was written against platform policy version 31
 BOARD_SEPOLICY_VERS := 31
