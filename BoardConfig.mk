@@ -114,15 +114,6 @@ TARGET_OTA_ASSERT_DEVICE := Infinix-X663,X663
 TARGET_RECOVERY_PIXEL_FORMAT := RGBX_8888
 TARGET_RECOVERY_UI_MARGIN_HEIGHT := 124
 
-# Recovery-as-boot does not merge TARGET_RAMDISK_OUT, so install the
-# first-stage tools explicitly.
-BOARD_RECOVERY_IMAGE_PREPARE = \
-    mkdir -p $(TARGET_RECOVERY_ROOT_OUT)/first_stage_ramdisk/system/bin && \
-    cp -f $(TARGET_RAMDISK_OUT)/system/bin/e2fsck \
-        $(TARGET_RECOVERY_ROOT_OUT)/first_stage_ramdisk/system/bin/e2fsck && \
-    cp -f $(TARGET_RAMDISK_OUT)/system/bin/snapuserd \
-        $(TARGET_RECOVERY_ROOT_OUT)/first_stage_ramdisk/system/bin/snapuserd
-
 # Virtual A/B OTA
 AB_OTA_UPDATER := true
 BOARD_USES_RECOVERY_AS_BOOT := true
