@@ -9,8 +9,9 @@
 #
 # Everything is written to /metadata because it is a first_stage_mount,
 # unencrypted, and survives a reboot that never gets as far as /data or the
-# home screen.  x663-logreport.sh later copies it to /data/local/tmp for
-# "adb pull".
+# home screen.  x663-logmirror.sh mirrors the set to external storage as soon
+# as vold mounts it, and x663-logreport.sh copies it to /data/local/tmp for
+# "adb pull" at boot completion.
 
 LOG_DIR=/metadata/x663-logs
 BOOT_ID_FILE="$LOG_DIR/boot_id"

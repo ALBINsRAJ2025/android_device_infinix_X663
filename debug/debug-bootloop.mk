@@ -10,6 +10,8 @@
 #     logd) and writes all buffers continuously to /metadata, which is a
 #     first_stage_mount and survives a reboot that never reaches /data or the
 #     home screen
+#   * a second service mirrors that set to the first writable external storage
+#     path and runs a direct external logcat follower once vold has mounted it
 #
 # This file is included once from device.mk.  It is intentionally a no-op on
 # user builds: "su" is only permissive on userdebug/eng, which is also the
@@ -39,6 +41,7 @@ PRODUCT_PRODUCT_PROPERTIES += \
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/debug/x663-logd.rc:$(TARGET_COPY_OUT_SYSTEM)/etc/init/x663-logd.rc \
     $(LOCAL_PATH)/debug/x663-logd.sh:$(TARGET_COPY_OUT_SYSTEM)/bin/x663-logd.sh \
+    $(LOCAL_PATH)/debug/x663-logmirror.sh:$(TARGET_COPY_OUT_SYSTEM)/bin/x663-logmirror.sh \
     $(LOCAL_PATH)/debug/x663-logreport.sh:$(TARGET_COPY_OUT_SYSTEM)/bin/x663-logreport.sh
 
 endif
