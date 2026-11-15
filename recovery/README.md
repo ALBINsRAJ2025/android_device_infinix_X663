@@ -1,8 +1,8 @@
 # Recovery ramdisk — stock provenance and naming
 
 This folder reproduces the **stock X663 recovery ramdisk** that the device
-runs in recovery-as-boot mode.  The reference is the stock SP Flash Tool
-package `stock_firmware/spflashtool_firmware/boot.img`, decoded with the
+runs in recovery-as-boot mode.  The reference is the stock
+firmware `stock_firmware/spflashtool_firmware/boot.img`, decoded with the
 Android 12 otatools:
 
 ```bash
