@@ -9,9 +9,7 @@ LOCAL_PATH := device/infinix/X663
 # Stock vendor payload
 $(call inherit-product, vendor/infinix/X663/X663-vendor.mk)
 
-# The stock vendor tree carries empty fs_config, passwd and group files.
-# Keep the platform-generated copies so the ownership and mode data from
-# configs/fs_config is available to the image builder and to libcutils.
+# Stock fs_config/passwd/group are empty; keep the platform-generated copies.
 PRODUCT_COPY_FILES := $(filter-out \
     vendor/infinix/X663/proprietary/etc/fs_config_files:vendor/etc/fs_config_files \
     vendor/infinix/X663/proprietary/etc/fs_config_dirs:vendor/etc/fs_config_dirs \
@@ -24,30 +22,22 @@ PRODUCT_COPY_FILES := $(filter-out \
     vendor/infinix/X663/proprietary/overlay/FrameworkResOverlay/FrameworkResOverlay.apk:vendor/overlay/FrameworkResOverlay/FrameworkResOverlay.apk \
     ,$(PRODUCT_COPY_FILES))
 
-# The stock FrameworkResOverlay is written for the Transsion framework. It
-# points config_dozeComponent at com.transsion.aod and uses Transsion-only
-# resource names. The device overlay below carries the equivalent AOSP values,
-# so do not install the vendor RRO that would override them at runtime.
+# Stock FrameworkResOverlay is Transsion-specific; do not install it.
 
-# The stock vendor init reads /vendor/etc/fstab.mt6768 during the early and
-# late mount phases. Use the same AVB-relaxed fstab as the first-stage ramdisk
-# so both mount passes agree.
+# Use the same AVB-relaxed fstab for vendor and first stage.
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/rootdir/etc/fstab.mt6768:$(TARGET_COPY_OUT_VENDOR)/etc/fstab.mt6768
 
 # Framework resource overlay
 DEVICE_PACKAGE_OVERLAYS += $(LOCAL_PATH)/overlay
 
-# Virtual A/B with snapshots and compression
+# Virtual A/B
 PRODUCT_USE_DYNAMIC_PARTITIONS := true
 PRODUCT_BUILD_SUPER_PARTITION := true
 $(call inherit-product, $(SRC_TARGET_DIR)/product/virtual_ab_ota/launch.mk)
 PRODUCT_VIRTUAL_AB_COMPRESSION := true
 
-# AOSP 12's libsnapshot defines a single snapuserd module with ramdisk,
-# vendor_ramdisk and recovery availability; snapuserd.ramdisk and
-# snapuserd.recovery are install-path labels, not module names. The
-# first-stage copy is handled by the recovery-as-boot packaging below.
+# snapuserd is a single module in AOSP 12.
 PRODUCT_PACKAGES += \
     snapuserd
 
@@ -60,14 +50,10 @@ ifeq ($(PLATFORM_SDK_VERSION),32)
 PRODUCT_EXTRA_VNDK_VERSIONS := 31
 endif
 
-# The vendor tree installs the stock vendor policy, context files and
-# precompiled policy. Disable AOSP's precompiled policy and filter the AOSP
-# vendor policy package; otherwise it regenerates platform-only files over
-# the stock policy.
+# Keep the stock vendor policy; do not let AOSP replace it.
 PRODUCT_PRECOMPILED_SEPOLICY := false
 
-# These platform vendor packages would overwrite binaries, libraries or
-# metadata supplied by the stock vendor tree.
+# AOSP packages that would overwrite stock vendor files.
 PRODUCT_PACKAGES := $(filter-out \
     selinux_policy_nonsystem \
     vendor_compatibility_matrix.xml \
@@ -98,7 +84,7 @@ PRODUCT_PACKAGES := $(filter-out \
     libvisualizer \
     ,$(PRODUCT_PACKAGES))
 
-# First-stage fstab for recovery-as-boot
+# Recovery-as-boot fstab
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/rootdir/etc/fstab.mt6768:$(TARGET_COPY_OUT_RAMDISK)/fstab.mt6768
 PRODUCT_COPY_FILES += \
@@ -114,19 +100,11 @@ PRODUCT_PACKAGES += \
     mtk_plpath_utils \
     mtk-plpath-utils.rc
 
-# Prebuilt kernel for plain AOSP 12 trees.
-#
-# AOSP 12 removed build/make/core/tasks/kernel.mk, so TARGET_PREBUILT_KERNEL
-# (set in BoardConfig.mk) has no consumer there and $(PRODUCT_OUT)/kernel is
-# never created. LineageOS 19.1 re-adds kernel.mk through its build fork and
-# owns that target, so the copy file is only added when kernel.mk is absent.
-# Keeping one producer avoids a duplicate rule for $(PRODUCT_OUT)/kernel.
+# Plain AOSP 12 has no kernel.mk; copy Image.gz ourselves (Lineage re-adds it).
 ifeq ($(wildcard vendor/lineage/build/tasks/kernel.mk),)
 PRODUCT_COPY_FILES += \
     kernel/infinix/X663/Image.gz:kernel
 endif
 
-# First-boot debug logging for the X663 (userdebug/eng only).
-# Remove this include, or set X663_DEBUG_BOOTLOOP := false before it, once the
-# device reaches the home screen.  See debug/debug-bootloop.mk.
+# First-boot debug logging (userdebug/eng); remove after first boot.
 include $(LOCAL_PATH)/debug/debug-bootloop.mk

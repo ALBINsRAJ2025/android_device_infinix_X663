@@ -37,22 +37,14 @@ TARGET_IS_64_BIT := true
 TARGET_SCREEN_DENSITY := 480
 
 # Platform
+# Keep the stock ro.product.board; the vendor blobs read it.
 TARGET_BOARD_PLATFORM := mt6768
 BOARD_HAS_MTK_HARDWARE := true
-# ro.product.board is generated from this value. The stock vendor image
-# reports Infinix-X663 and four vendor libraries read that property
-# (libancbase_848, libanc_dc_base, libsmartdetector, librmsclib1), so keep
-# the stock value instead of the SoC name. vendor.prop carries the same
-# value; changing only one of the two aborts the build with a duplicate
-# sysprop error.
 TARGET_BOOTLOADER_BOARD_NAME := Infinix-X663
 TARGET_NO_BOOTLOADER := true
 TARGET_NO_RADIOIMAGE := true
 
-# Kernel
-# Verified against the stock X663 boot.img: ANDROID! header version 2 and
-# 2048-byte page size. Do not switch to header v4 or 4096-byte pages; the
-# stock MT6768 bootloader of this device parses the v2 header only.
+# Kernel (stock boot.img is header v2, 2048-byte pages)
 BOARD_BOOT_HEADER_VERSION := 2
 BOARD_KERNEL_IMAGE_NAME := Image.gz
 
@@ -146,10 +138,7 @@ AB_OTA_PARTITIONS := \
     vbmeta_vendor \
     vendor
 
-# Verified boot
-#
-# Test-key signing for unlocked devices. Replace the keys and flags before
-# producing a production build.
+# Verified boot (test keys; replace before production)
 BOARD_AVB_ENABLE := true
 BOARD_AVB_ALGORITHM := SHA256_RSA2048
 BOARD_AVB_KEY_PATH := external/avb/test/data/testkey_rsa2048.pem
@@ -172,38 +161,16 @@ BOARD_AVB_BOOT_KEY_PATH := external/avb/test/data/testkey_rsa2048.pem
 BOARD_AVB_BOOT_ROLLBACK_INDEX := 0
 BOARD_AVB_BOOT_ROLLBACK_INDEX_LOCATION := 3
 
-# VNDK
-#
-# The stock vendor blobs are built against VNDK 31. AOSP 12 uses 31 as
-# current; 12L uses 32, so pin the vendor build to 31 on 12L builds.
+# VNDK (stock blobs are VNDK 31)
 ifeq ($(PLATFORM_SDK_VERSION),32)
 BOARD_VNDK_VERSION := 31
 else
 BOARD_VNDK_VERSION := current
 endif
 
-# Vendor SELinux policy port and permissive policy
-#
-# The stock prebuilt kernel cannot be made permissive at all: it is built
-# with CONFIG_SECURITY_SELINUX_DEVELOP=n and
-# CONFIG_SECURITY_SELINUX_BOOTPARAM=n, so it starts enforcing,
-# /sys/fs/selinux/enforce has no write handler (security/selinux/selinuxfs.c
-# compiles sel_write_enforce out without CONFIG_SECURITY_SELINUX_DEVELOP) and
-# the enforcing=/selinux= boot parameters are ignored.  A kernel-side
-# permissive build needs a kernel built with CONFIG_SECURITY_SELINUX_DEVELOP=y,
-# which requires the kernel source.
-#
-# The stock vendor policy is MediaTek's Android 12 platform policy (version 31)
-# plus the vendor rules; only the vendor rules are in the device's vendor tree,
-# and AOSP 12 compiles the vendor policy from .te sources.  See
-# sepolicy/README.md for the full analysis and the conversion.
-#
-#   false (default) - platform policy + AOSP's generic vendor policy.  The
-#     stock vendor_sepolicy.cil / vendor_file_contexts blobs are inert; the
-#     missing vendor rules show up as avc: denied entries on the device.
-#   true - compile the policy from sepolicy/vendor.te; the first build reports
-#     the symbols that only MediaTek's platform policy provided, and they are
-#     added to sepolicy/mtk_platform.te one by one.
+# Vendor SELinux policy port
+# Kernel cannot be made permissive (DEVELOP=n, BOOTPARAM=n); see the
+# sepolicy/ and sepolicy_permissive/ READMEs for the details and the plan.
 X663_SEPOLICY_PORT ?= false
 X663_SELINUX_PERMISSIVE ?= false
 
@@ -214,17 +181,10 @@ X663_SEPOLICY_DIRS += $(LOCAL_PATH)/sepolicy
 BOARD_SEPOLICY_VERS := 31
 endif
 ifeq ($(X663_SELINUX_PERMISSIVE),true)
-# sepolicy_permissive/permissive.te marks every platform and vendor type
-# permissive, so the kernel logs every denial and enforces nothing.
-# It is a development-only setting: AOSP 12 refuses a "user" build when a
-# policy contains permissive domains, so keep this userdebug/eng only.
+# userdebug/eng only; marks every policy type permissive.
 X663_SEPOLICY_DIRS += $(LOCAL_PATH)/sepolicy_permissive
 endif
 BOARD_VENDOR_SEPOLICY_DIRS := $(X663_SEPOLICY_DIRS)
 
-# Vendor image
-#
-# The vendor partition is built from vendor/infinix/X663. The stock vendor
-# tree supplies the MTK binaries, SELinux policy, context files and the
-# precompiled policy; AOSP must not generate a replacement vendor policy.
+# Vendor image: built from vendor/infinix/X663, stock policy kept.
 VENDOR_SECURITY_PATCH := 2023-09-05
