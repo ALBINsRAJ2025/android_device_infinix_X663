@@ -176,13 +176,13 @@ X663_SELINUX_PERMISSIVE ?= false
 
 X663_SEPOLICY_DIRS :=
 ifneq ($(X663_SEPOLICY_PORT),false)
-X663_SEPOLICY_DIRS += $(LOCAL_PATH)/sepolicy
+X663_SEPOLICY_DIRS += $(DEVICE_PATH)/sepolicy
 # the stock vendor policy was written against platform policy version 31
 BOARD_SEPOLICY_VERS := 31
 endif
 ifeq ($(X663_SELINUX_PERMISSIVE),true)
 # userdebug/eng only; marks every policy type permissive.
-X663_SEPOLICY_DIRS += $(LOCAL_PATH)/sepolicy_permissive
+X663_SEPOLICY_DIRS += $(DEVICE_PATH)/sepolicy_permissive
 endif
 BOARD_VENDOR_SEPOLICY_DIRS := $(X663_SEPOLICY_DIRS)
 
