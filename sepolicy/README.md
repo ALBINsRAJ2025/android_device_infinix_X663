@@ -84,6 +84,17 @@ What it does:
 allowxperm rules and 919 genfscon/type_transition statements, with **0 missing
 and 0 extra**.  Re-run the equivalence check after every regeneration.
 
+## The permissive option
+
+`sepolicy_permissive/permissive.te` marks every type permissive (see its
+README).  It is the ROM-side way to get a fully permissive system, but it
+cannot replace the kernel side: the stock kernel has
+`CONFIG_SECURITY_SELINUX_DEVELOP=n` and
+`CONFIG_SECURITY_SELINUX_BOOTPARAM=n`, so it starts enforcing, the
+`/sys/fs/selinux/enforce` node has no write handler and the `enforcing=`/
+`selinux=` boot parameters are ignored.  A kernel-side permissive build needs
+a kernel built with `CONFIG_SECURITY_SELINUX_DEVELOP=y`.
+
 ## Enabling the port
 
 `BoardConfig.mk` gates the port:

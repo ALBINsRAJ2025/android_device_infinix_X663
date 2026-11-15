@@ -182,7 +182,16 @@ else
 BOARD_VNDK_VERSION := current
 endif
 
-# Vendor SELinux policy port
+# Vendor SELinux policy port and permissive policy
+#
+# The stock prebuilt kernel cannot be made permissive at all: it is built
+# with CONFIG_SECURITY_SELINUX_DEVELOP=n and
+# CONFIG_SECURITY_SELINUX_BOOTPARAM=n, so it starts enforcing,
+# /sys/fs/selinux/enforce has no write handler (security/selinux/selinuxfs.c
+# compiles sel_write_enforce out without CONFIG_SECURITY_SELINUX_DEVELOP) and
+# the enforcing=/selinux= boot parameters are ignored.  A kernel-side
+# permissive build needs a kernel built with CONFIG_SECURITY_SELINUX_DEVELOP=y,
+# which requires the kernel source.
 #
 # The stock vendor policy is MediaTek's Android 12 platform policy (version 31)
 # plus the vendor rules; only the vendor rules are in the device's vendor tree,
@@ -196,11 +205,22 @@ endif
 #     the symbols that only MediaTek's platform policy provided, and they are
 #     added to sepolicy/mtk_platform.te one by one.
 X663_SEPOLICY_PORT ?= false
-ifeq ($(X663_SEPOLICY_PORT),true)
-BOARD_VENDOR_SEPOLICY_DIRS := $(LOCAL_PATH)/sepolicy
+X663_SELINUX_PERMISSIVE ?= false
+
+X663_SEPOLICY_DIRS :=
+ifneq ($(X663_SEPOLICY_PORT),false)
+X663_SEPOLICY_DIRS += $(LOCAL_PATH)/sepolicy
 # the stock vendor policy was written against platform policy version 31
 BOARD_SEPOLICY_VERS := 31
 endif
+ifeq ($(X663_SELINUX_PERMISSIVE),true)
+# sepolicy_permissive/permissive.te marks every platform and vendor type
+# permissive, so the kernel logs every denial and enforces nothing.
+# It is a development-only setting: AOSP 12 refuses a "user" build when a
+# policy contains permissive domains, so keep this userdebug/eng only.
+X663_SEPOLICY_DIRS += $(LOCAL_PATH)/sepolicy_permissive
+endif
+BOARD_VENDOR_SEPOLICY_DIRS := $(X663_SEPOLICY_DIRS)
 
 # Vendor image
 #
