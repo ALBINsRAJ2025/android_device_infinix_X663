@@ -4,8 +4,6 @@ on:
   workflow_dispatch:
   push:
     branches: [ lineage-19.1 ]
-    paths:
-      - '.github/workflows/**'
 
 jobs:
   build:
