@@ -20,7 +20,7 @@ jobs:
             bc bison build-essential ccache curl erofs-utils flex g++-multilib gcc-multilib \
             git git-lfs gnupg gperf imagemagick kmod protobuf-compiler python3-protobuf \
             lib32readline-dev lib32z1-dev libdw-dev libelf-dev libgnutls28-dev libsdl1.2-dev \
-            libssl-dev libncurses5 libncurses-dev libxml2-utils lzop pngcrush rsync \
+            libssl-dev libncurses-dev libxml2-utils lzop pngcrush rsync \
             schedtool squashfs-tools xsltproc xxd zip zlib1g-dev
 
       - name: Install repo tool and OpenJDK 11
