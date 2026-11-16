@@ -15,25 +15,8 @@ TARGET_VENDOR_PROP += $(DEVICE_PATH)/vendor.prop
 -include vendor/infinix/X663/BoardConfigVendor.mk
 
 # Architecture
-# The stock build was compiled with the AOSP 12 arm64 baseline, not with a
-# dotprod-flavored ISA.  Evidence from the stock partition:
-#   ro.vndk.version=31                  (vendor blobs are VNDK 31)
-#   ro.bionic.arch=arm64
-#   ro.bionic.cpu_variant=cortex-a53    (main build baseline)
-#   ro.bionic.2nd_arch=arm
-#   ro.bionic.2nd_cpu_variant=cortex-a53
-# (stock vendor/build.prop, from the stock package — not from a reference
-# tree).  The stock DT shows 6x Cortex-A55 + 2x Cortex-A75 (both ARMv8.2-A),
-# but the stock userspace baseline is the AOSP default for Android 12.
-#
-# The lineage-19.1 branch pins BOARD_VNDK_VERSION := 31 (stock blobs are
-# VNDK 31), and AOSP 12 builds against current; the prebuilt v31 vendor
-# snapshot in Lineage's tree only carries android_vendor.31_arm64_armv8-a
-# (arm64) and android_vendor.31_arm_armv7-a-neon (arm, 32-bit) variants.
-# Building the vendor with armv8-2a-dotprod leaves no matching snapshot
-# namespace, and Soong fails every vendor:true module with
-# "depends on undefined module 'vendor_snapshot'" for the variant
-# android_vendor.31_arm64_armv8-2a-dotprod.  Use the stock baseline.
+# Stock baseline (stock vendor build.prop: ro.vndk.version=31, cortex-a53).
+# armv8-2a-dotprod has no matching v31 snapshot namespace; see commit message.
 TARGET_ARCH := arm64
 TARGET_ARCH_VARIANT := armv8-a
 TARGET_CPU_ABI := arm64-v8a
