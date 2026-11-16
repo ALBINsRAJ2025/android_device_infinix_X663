@@ -51,6 +51,7 @@ PRODUCT_CHARACTERISTICS := phone
 # v32, so install the v31 snapshot for 12L builds.
 ifeq ($(PLATFORM_SDK_VERSION),32)
 PRODUCT_EXTRA_VNDK_VERSIONS := 31
+PRODUCT_VENDOR_PROPERTIES += ro.vndk.version=31
 endif
 
 # Keep the stock vendor policy; do not let AOSP replace it.
