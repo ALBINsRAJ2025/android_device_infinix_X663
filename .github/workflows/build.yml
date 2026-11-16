@@ -52,7 +52,7 @@ jobs:
             '  <project path="kernel/infinix/X663" name="android_kernel_infinix_X663" remote="x663" />' \
             '  <project path="vendor/infinix/X663" name="android_vendor_infinix_X663" remote="x663" />' \
             '</manifest>' > .repo/local_manifests/x663.xml
-          "$HOME/bin/repo" sync -j"$(nproc)" --depth=1 --no-clone-bundle --force-sync --no-tags
+          "$HOME/bin/repo" sync -j"$(nproc)" --no-clone-bundle --force-sync --no-tags
 
       - name: Build lineage_X663-userdebug
         run: |
