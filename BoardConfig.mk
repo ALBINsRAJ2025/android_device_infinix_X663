@@ -161,12 +161,7 @@ BOARD_AVB_BOOT_KEY_PATH := external/avb/test/data/testkey_rsa2048.pem
 BOARD_AVB_BOOT_ROLLBACK_INDEX := 0
 BOARD_AVB_BOOT_ROLLBACK_INDEX_LOCATION := 3
 
-# VNDK (stock blobs are VNDK 31)
-ifeq ($(PLATFORM_SDK_VERSION),32)
-BOARD_VNDK_VERSION := 31
-else
 BOARD_VNDK_VERSION := current
-endif
 
 # Vendor SELinux policy port
 # Kernel cannot be made permissive (DEVELOP=n, BOOTPARAM=n); see the
