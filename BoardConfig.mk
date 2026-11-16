@@ -57,6 +57,17 @@ BOARD_DTB_OFFSET := 0x0bc08000
 # buildvariant is appended by the build system.
 BOARD_KERNEL_CMDLINE := bootopt=64S3,32N2,64N2
 
+# The kernel is shipped as a payload only (Image.gz, dtb/, dtbo.img); there is
+# no kernel source tree.  Lineage's kernel.mk tests the mere existence of
+# $(TARGET_KERNEL_SOURCE) to decide between a source build and the prebuilt
+# path (vendor/lineage/build/tasks/kernel.mk:120-163), and
+# vendor/lineage/config/BoardConfigKernel.mk:52-53 defaults that variable to
+# kernel/$(vendor)/$(device) - which is exactly where this payload is synced.
+# With a directory present and no TARGET_KERNEL_CONFIG, kernel.mk aborts with
+# $(error "NO KERNEL CONFIG").  Keeping TARGET_KERNEL_SOURCE empty selects the
+# prebuilt path; AOSP 12 has no kernel.mk and takes device.mk's
+# PRODUCT_COPY_FILES Image.gz:kernel rule instead.
+TARGET_KERNEL_SOURCE :=
 TARGET_PREBUILT_KERNEL := kernel/infinix/X663/Image.gz
 BOARD_PREBUILT_DTBIMAGE_DIR := kernel/infinix/X663/dtb
 BOARD_INCLUDE_DTB_IN_BOOTIMG := true
