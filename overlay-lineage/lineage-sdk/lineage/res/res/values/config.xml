@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- Copyright (C) 2026 ALBINsRAJ2025 -->
+<!--
+     LineageOS-only resource overlay for the Infinix Note 11 (X663).
+
+     This directory is wired from lineage_X663.mk only.  Plain AOSP has no
+     lineage-sdk package, so these resources must never be applied to the
+     aosp_X663 product.
+
+     The resources are defined in lineage-sdk's
+     lineage/res/res/values/config.xml (LineageOS 19.1): the four keys below
+     are at lines 264, 138, 152, 21 and 23 of that file.  Every value here is
+     a property of the X663 hardware taken from the stock firmware, not from
+     another device's tree.
+-->
+<resources>
+
+    <!-- 6.7-inch FHD+ panel (1080 x 2460 documented in this tree's README;
+         the stock product wallpapers in product/theme/wallpaper/ are
+         1080x2400 and the stock boot DTBO names the panel
+         hx83112b_fhdp_dsi_cmd_auo_rt5081_drv, i.e. an "fhdp" panel).
+         Anything taller than 16:9 is a higher aspect ratio screen. -->
+    <bool name="config_haveHigherAspectRatioScreen">true</bool>
+
+    <!-- Key set from the stock boot DTBO, keypad node of fragment@50:
+         mediatek,kpd-hw-init-map = <0x73 0x72 ...> (VOLUMEUP 115,
+         VOLUMEDOWN 114) and mediatek,kpd-sw-pwrkey = <0x74> (POWER 116, the
+         PMIC key).  There is no home, back, menu, assist, app-switch or
+         camera key, and navigation is on-screen (config_showNavigationBar is
+         true in the shared overlay).  64 = volume rocker. -->
+    <integer name="config_deviceHardwareKeys">64</integer>
+    <integer name="config_deviceHardwareWakeKeys">64</integer>
+
+    <!-- The stock vendor tree declares
+         vendor/etc/permissions/android.hardware.sensor.proximity.xml, so the
+         "prevent accidental wake-up" toggle can be offered.  It stays off by
+         default: enabling it changes the power-key wake behaviour. -->
+    <bool name="config_proximityCheckOnWake">true</bool>
+    <bool name="config_proximityCheckOnWakeEnabledByDefault">false</bool>
+
+</resources>
