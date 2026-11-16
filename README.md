@@ -14,7 +14,7 @@
 | --- | --- |
 | **Model** | Infinix Note 11 (X663) |
 | **SoC** | MediaTek MT6768 / Helio G88 (MT6769H) (2× Cortex-A75 + 6× Cortex-A55) |
-| **Display** | 6.7" 1080×2460, 480 dpi, 60 Hz |
+| **Display** | 6.7" 1080×2400, 393 dpi, 60 Hz |
 | **Stock ROM** | XOS 10.6.0, Android 12, `X663-H6915ABCEFGHIO-S-GL-230918V670` |
 | **Partitions** | Virtual A/B, dynamic (`system`, `system_ext`, `product`, `vendor`) |
 | **First API level** | 30 |
