@@ -1,0 +1,85 @@
+name: Build lineage_X663
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ lineage-19.1 ]
+    paths:
+      - '.github/workflows/**'
+
+jobs:
+  build:
+    name: Build lineage_X663 images
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    steps:
+      - name: Install build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            bc bison build-essential ccache curl erofs-utils flex g++-multilib gcc-multilib \
+            git git-lfs gnupg gperf imagemagick kmod protobuf-compiler python3-protobuf \
+            lib32readline-dev lib32z1-dev libdw-dev libelf-dev libgnutls28-dev libsdl1.2-dev \
+            libssl-dev libncurses5 libncurses-dev libxml2-utils lzop pngcrush rsync \
+            schedtool squashfs-tools xsltproc xxd zip zlib1g-dev
+
+      - name: Install repo tool and OpenJDK 11
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y openjdk-11-jdk-headless python3-pip
+          mkdir -p "$HOME/bin"
+          curl -fsSL https://storage.googleapis.com/git-repo-downloads/repo > "$HOME/bin/repo"
+          chmod a+x "$HOME/bin/repo"
+          echo "$HOME/bin" >> "$GITHUB_PATH"
+
+      - name: Restore ccache
+        uses: actions/cache@v4
+        with:
+          path: ~/.ccache
+          key: x663-ccache-${{ github.ref_name }}-${{ github.run_id }}
+          restore-keys: |
+            x663-ccache-${{ github.ref_name }}-
+            x663-ccache-
+
+      - name: Clone LineageOS 19.1 and X663 trees
+        run: |
+          mkdir -p "$HOME/android/lineage"
+          cd "$HOME/android/lineage"
+          "$HOME/bin/repo" init -u https://github.com/LineageOS/android.git -b lineage-19.1 --depth=1 --git-lfs --no-clone-bundle
+          mkdir -p .repo/local_manifests
+          printf '%s\n' \
+            '<manifest>' \
+            '  <remote name="x663" fetch="https://github.com/ALBINsRAJ2025/" revision="lineage-19.1" />' \
+            '  <project path="device/infinix/X663" name="android_device_infinix_X663" remote="x663" />' \
+            '  <project path="kernel/infinix/X663" name="android_kernel_infinix_X663" remote="x663" />' \
+            '  <project path="vendor/infinix/X663" name="android_vendor_infinix_X663" remote="x663" />' \
+            '</manifest>' > .repo/local_manifests/x663.xml
+          "$HOME/bin/repo" sync -j"$(nproc)" --depth=1 --no-clone-bundle --force-sync --no-tags
+
+      - name: Build lineage_X663-userdebug
+        run: |
+          cd "$HOME/android/lineage"
+          source build/envsetup.sh
+          export CCACHE_DIR="$HOME/.ccache"
+          ccache -M 50G
+          lunch lineage_X663-userdebug
+          m -j"$(nproc)" 2>&1 | tee build.log
+
+      - name: Collect artifacts into staging dir
+        if: always()
+        run: |
+          mkdir -p "$RUNNER_TEMP/out"
+          P="$HOME/android/lineage/out/target/product/X663"
+          for f in boot.img dtbo.img vbmeta.img vbmeta_system.img super.img system.img system_ext.img vendor.img userdata.img vendor_ramdisk.img odm.img; do
+            [ -f "$P/$f" ] && cp -p "$P/$f" "$RUNNER_TEMP/out/$f"
+          done
+          cp -p "$P"/*.zip "$RUNNER_TEMP/out/" 2>/dev/null || true
+          cp -p "$HOME/android/lineage/build.log" "$RUNNER_TEMP/out/build.log"
+
+      - name: Upload build artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lineage_X663-out
+          path: ${{ runner.temp }}/out/*
+          retention-days: 7
