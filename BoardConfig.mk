@@ -177,8 +177,13 @@ X663_SELINUX_PERMISSIVE ?= false
 X663_SEPOLICY_DIRS :=
 ifeq ($(X663_SEPOLICY_PORT),true)
 X663_SEPOLICY_DIRS += $(DEVICE_PATH)/sepolicy
-# the stock vendor policy was written against platform policy version 31
-BOARD_SEPOLICY_VERS := 31
+# The stock vendor policy was written against platform policy version 31.0
+# (stock_firmware/unpacked/sepolicy/plat_sepolicy_vers.txt contains "31.0").
+# BOARD_SEPOLICY_VERS must use the "NN.m" form: system/sepolicy/Android.mk:89-93
+# documents it, and system/sepolicy/prebuilt_policy.mk:33 looks up
+# prebuilts/api/$(BOARD_SEPOLICY_VERS).  A bare "31" would name the nonexistent
+# prebuilts/api/31 and force a mixed build against no platform policy at all.
+BOARD_SEPOLICY_VERS := 31.0
 endif
 ifeq ($(X663_SELINUX_PERMISSIVE),true)
 # userdebug/eng only; marks every policy type permissive.
