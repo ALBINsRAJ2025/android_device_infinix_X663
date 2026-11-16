@@ -15,8 +15,6 @@ TARGET_VENDOR_PROP += $(DEVICE_PATH)/vendor.prop
 -include vendor/infinix/X663/BoardConfigVendor.mk
 
 # Architecture
-# Stock baseline (stock vendor build.prop: ro.vndk.version=31, cortex-a53).
-# armv8-2a-dotprod has no matching v31 snapshot namespace; see commit message.
 TARGET_ARCH := arm64
 TARGET_ARCH_VARIANT := armv8-a
 TARGET_CPU_ABI := arm64-v8a
