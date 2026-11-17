@@ -1,9 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0 AND LicenseRef-Stock-Firmware
 # Copyright (C) 2026 ALBINsRAJ2025
-# Derived from stock X663 firmware; see NOTICE.
-# Infinix Note 11 (X663) fstab
-# AVB verification is disabled for test-key builds.
-#
 system /system ext4 ro wait,slotselect,logical,first_stage_mount
 vendor /vendor ext4 ro wait,slotselect,logical,first_stage_mount
 product /product ext4 ro wait,slotselect,logical,first_stage_mount
