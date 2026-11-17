@@ -27,17 +27,27 @@
 
 ## 🔨 Build
 
-```bash
-repo init -u https://github.com/LineageOS/android.git -b lineage-19.1
-repo sync -j8
+Follow the official LineageOS build guide, adding the three repositories to
+the source tree as the guide does for a device that is not in the upstream
+manifest:
 
-cp -a device/infinix/X663   lineage/device/infinix/
-cp -a vendor/infinix/X663   lineage/vendor/infinix/
-cp -a kernel/infinix/X663   lineage/kernel/infinix/
-cd lineage
-. build/envsetup.sh
+```bash
+mkdir -p ~/android/lineage
+cd ~/android/lineage
+
+repo init -u https://github.com/LineageOS/android.git -b lineage-19.1 --git-lfs
+repo sync -c -j$(nproc --all) --force-sync --no-clone-bundle --no-tags
+
+git clone https://github.com/ALBINsRAJ2025/android_device_infinix_X663 \
+    -b lineage-19.1 device/infinix/X663
+git clone https://github.com/ALBINsRAJ2025/android_vendor_infinix_X663 \
+    -b lineage-19.1 vendor/infinix/X663
+git clone https://github.com/ALBINsRAJ2025/android_kernel_infinix_X663 \
+    -b lineage-19.1 kernel/infinix/X663
+
+source build/envsetup.sh
 lunch lineage_X663-userdebug
-m -j$(nproc)
+mka bacon -j$(nproc --all)
 ```
 
 `lunch` offers `lineage_X663-{userdebug,eng,user}` and the same three for
