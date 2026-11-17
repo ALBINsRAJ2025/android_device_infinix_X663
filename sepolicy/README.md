@@ -56,11 +56,17 @@ the mixed build (platform 32.0, vendor 31.0) compiles the ported policy against
 ## Mixed-build compat
 
 The mixed build also compiles Lineage's current `system_ext` policy (32.0)
-against the 31.0 platform prebuilts. `device/lineage/sepolicy/common/private/
-file.te` uses the attribute `sdcard_posix_contextmount_type`, which the 31.0
-prebuilts do not declare, so `sepolicy_neverallows_vendor` stops parsing.
-`sepolicy_compat/public/attributes` declares it and `BoardConfig.mk` prepends
-that directory:
+against the 31.0 platform prebuilts. Two attributes from
+`system/sepolicy/public/attributes` are new in 32.0 and missing from the 31.0
+prebuilts:
+
+| Attribute | Used by |
+| --- | --- |
+| `sdcard_posix_contextmount_type` | `device/lineage/sepolicy/common/private/file.te` |
+| `hal_service_type` | `device/lineage/sepolicy/common/dynamic/service.te` |
+
+`sepolicy_compat/public/attributes` declares both and `BoardConfig.mk`
+prepends that directory:
 
 ```make
 BOARD_SYSTEM_EXT_PUBLIC_PREBUILT_DIRS = $(DEVICE_PATH)/sepolicy_compat/public $(SYSTEM_EXT_PUBLIC_POLICY)
@@ -69,7 +75,9 @@ BOARD_SYSTEM_EXT_PUBLIC_PREBUILT_DIRS = $(DEVICE_PATH)/sepolicy_compat/public $(
 The variable is recursive on purpose: it is read after
 `SYSTEM_EXT_PUBLIC_POLICY` is filled in, so the Lineage `system_ext` public
 policy stays in the list. Only mixed builds read it; normal builds never see
-the directory.
+the directory. The pair above is the complete set: every identifier used by
+`device/lineage/sepolicy/common` and by the 32.0 `system/sepolicy/vendor`
+sources resolves against the 31.0 prebuilts once both are declared.
 
 Off (default): platform policy + AOSP generic vendor policy; the missing
 vendor rules appear as `avc: denied`. On: compile `vendor.te`; the first build
