@@ -43,13 +43,6 @@ lunch lineage_X663-userdebug
 mka bacon -j$(nproc --all)
 ```
 
-## 🖼️ Images
-
-```bash
-m bootimage dtboimage systemimage system_extimage productimage vendorimage \
-  vbmetaimage vbmeta_systemimage vbmeta_vendorimage superimage
-```
-
 ## ⚖️ Licensing
 
 Original device-tree files are licensed under **Apache-2.0** (see `LICENSE` and `NOTICE`).
