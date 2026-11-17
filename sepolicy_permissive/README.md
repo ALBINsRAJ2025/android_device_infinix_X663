@@ -19,6 +19,14 @@ The stock kernel cannot be made permissive:
 A kernel-side permissive build needs a kernel with `DEVELOP=y`, i.e. the
 kernel source (not delivered).
 
+## Debug only
+
+This helper is a diagnostic, not a shipping path. With `X663_SEPOLICY_PORT`
+off it would install a generic vendor policy plus 2,952 permissive domains in
+place of the stock vendor policy, which is the opposite of the default stock
+setup. Enabling it therefore stops the build unless the converted port is
+enabled too.
+
 ## Enabling
 
 `BoardConfig.mk`:
@@ -27,8 +35,9 @@ kernel source (not delivered).
 X663_SELINUX_PERMISSIVE ?= false
 ```
 
-Set `true` for userdebug/eng (user builds refuse permissive domains). Do not
-ship it.
+Set `true` only for a local `userdebug` or `eng` debug session. `BoardConfig.mk`
+raises a build error when it is `true` without `X663_SEPOLICY_PORT := true`, or
+in any variant other than `userdebug` and `eng`.
 
 ## How to use
 

@@ -156,6 +156,16 @@ BOARD_VNDK_VERSION := current
 X663_SEPOLICY_PORT ?= false
 X663_SELINUX_PERMISSIVE ?= false
 
+# Permissive helper guard
+ifeq ($(X663_SELINUX_PERMISSIVE),true)
+ifneq ($(X663_SEPOLICY_PORT),true)
+$(error X663_SELINUX_PERMISSIVE needs X663_SEPOLICY_PORT; it is debug-only)
+endif
+ifneq ($(filter userdebug eng,$(TARGET_BUILD_VARIANT)),$(TARGET_BUILD_VARIANT))
+$(error X663_SELINUX_PERMISSIVE is allowed only in userdebug and eng)
+endif
+endif
+
 BOARD_SEPOLICY_VERS := 31.0
 
 # Mixed-build policy prebuilts
