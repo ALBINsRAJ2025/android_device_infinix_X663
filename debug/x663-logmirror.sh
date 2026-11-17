@@ -1,5 +1,6 @@
 #!/system/bin/sh
 # SPDX-License-Identifier: Apache-2.0
+# X663 external log mirror
 
 SRC=/metadata/x663-logs
 POLL=5

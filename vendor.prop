@@ -1,5 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (C) 2026 ALBINsRAJ2025
+# Vendor properties for the Infinix Note 11 (X663)
 
 ro.minui.pixel_format=RGBX_8888
 ro.boot.dynamic_partitions=true

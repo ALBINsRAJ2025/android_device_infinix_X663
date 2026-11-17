@@ -1,5 +1,6 @@
 #!/system/bin/sh
 # SPDX-License-Identifier: Apache-2.0
+# X663 first-boot debug report
 
 SRC=/metadata/x663-logs
 DST=/data/local/tmp/x663-logs

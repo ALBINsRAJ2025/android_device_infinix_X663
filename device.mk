@@ -1,8 +1,10 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (C) 2026 ALBINsRAJ2025
+# device.mk - Infinix Note 11 (X663)
 
 LOCAL_PATH := device/infinix/X663
 
+# Stock vendor payload
 $(call inherit-product, vendor/infinix/X663/X663-vendor.mk)
 
 PRODUCT_COPY_FILES := $(filter-out \
@@ -17,11 +19,14 @@ PRODUCT_COPY_FILES := $(filter-out \
     vendor/infinix/X663/proprietary/overlay/FrameworkResOverlay/FrameworkResOverlay.apk:$(TARGET_COPY_OUT_VENDOR)/overlay/FrameworkResOverlay/FrameworkResOverlay.apk \
     ,$(PRODUCT_COPY_FILES))
 
+
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/rootdir/etc/fstab.mt6768:$(TARGET_COPY_OUT_VENDOR)/etc/fstab.mt6768
 
+# Framework resource overlay
 DEVICE_PACKAGE_OVERLAYS += $(LOCAL_PATH)/overlay
 
+# Virtual A/B
 PRODUCT_USE_DYNAMIC_PARTITIONS := true
 PRODUCT_BUILD_SUPER_PARTITION := true
 $(call inherit-product, $(SRC_TARGET_DIR)/product/virtual_ab_ota/launch.mk)
@@ -69,12 +74,15 @@ PRODUCT_PACKAGES := $(filter-out \
     libvisualizer \
     ,$(PRODUCT_PACKAGES))
 
+# Recovery-as-boot fstab
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/rootdir/etc/fstab.mt6768:$(TARGET_COPY_OUT_RECOVERY)/root/first_stage_ramdisk/fstab.mt6768
 
+# Stock carrier APN database
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/apns-conf.xml:$(TARGET_COPY_OUT_PRODUCT)/etc/apns-conf.xml
 
+# Recovery ramdisk
 PRODUCT_PACKAGES += \
     init.recovery.mt6768.rc \
     mtk_plpath_utils \
@@ -85,4 +93,5 @@ PRODUCT_COPY_FILES += \
     kernel/infinix/X663/Image.gz:kernel
 endif
 
+# First-boot debug logging
 include $(LOCAL_PATH)/debug/debug-bootloop.mk

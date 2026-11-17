@@ -1,4 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0
+# X663 first-boot debug configuration
 
 X663_DEBUG_BOOTLOOP ?= true
 

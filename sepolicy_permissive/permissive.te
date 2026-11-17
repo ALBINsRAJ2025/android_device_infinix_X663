@@ -1,4 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0
+# Permissive domains
 
 permissive AD5820AF_device;
 permissive AK7345AF_device;

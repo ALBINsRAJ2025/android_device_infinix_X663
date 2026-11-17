@@ -1,4 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0
+# X663 first-boot debug logging
 
 service x663-logd /system/bin/sh /system/bin/x663-logd.sh
     class core

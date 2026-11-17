@@ -1,5 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (C) 2026 ALBINsRAJ2025
+# Stock vendor filesystem ownership and modes
 
 [vendor/app/]
 mode: 0755

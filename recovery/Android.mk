@@ -1,5 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (C) 2026 ALBINsRAJ2025
+# Recovery ramdisk modules
 
 LOCAL_PATH := $(call my-dir)
 

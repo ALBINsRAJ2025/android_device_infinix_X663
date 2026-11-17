@@ -1,4 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0
+# Vendor SELinux policy
 genfscon debugfs /debussy/vad_mode_switch u:object_r:debugfs_vad_mode_switch_file;
 genfscon debugfs /mml/mml-frame-dump-in u:object_r:debugfs_mml;
 genfscon debugfs /ion/client_history u:object_r:debugfs_ion_mm_heap;

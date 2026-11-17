@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# Regenerate permissive.te
 set -euo pipefail
 cd "$(dirname "$0")/.."
 python3 - <<'PY'
@@ -12,7 +13,7 @@ for line in open('sepolicy/vendor.te'):
     if m: types.add(m.group(1))
 types.discard('vendor_file')
 with open('sepolicy_permissive/permissive.te','w') as fh:
-    fh.write('# SPDX-License-Identifier: Apache-2.0\n\n')
+    fh.write('# SPDX-License-Identifier: Apache-2.0\n# Permissive domains\n\n')
     for t in sorted(types):
         fh.write('permissive %s;\n' % t)
 print('permissive.te: %d types' % len(types))

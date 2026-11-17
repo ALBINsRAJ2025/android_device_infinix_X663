@@ -1,5 +1,6 @@
 #!/system/bin/sh
 # SPDX-License-Identifier: Apache-2.0
+# X663 first-boot debug collector
 
 LOG_DIR=/metadata/x663-logs
 BOOT_ID_FILE="$LOG_DIR/boot_id"

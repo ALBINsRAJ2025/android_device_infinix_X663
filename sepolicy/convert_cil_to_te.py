@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: Apache-2.0
+# Convert the stock CIL to vendor.te
 
 import argparse
 import os
@@ -255,7 +256,8 @@ def main():
         else:
             note(kind + ':unsupported')
 
-    header = ['# SPDX-License-Identifier: Apache-2.0', '']
+    header = ['# SPDX-License-Identifier: Apache-2.0',
+              '# Vendor SELinux policy', '']
 
     with open(args.out, 'w') as fh:
         fh.write('\n'.join(header))
