@@ -20,16 +20,9 @@
 | **First API level** | 30 |
 | **Vendor VNDK** | 31 |
 
-## ✨ Highlights
-
-- **Stock vendor policy** retained (v31) with platform policy v32 fallback handling.
-- **Framework resource overlay** with corrected Android 12 power profile (6+2 cluster CPU layout).
-
 ## 🔨 Build
 
-Follow the official LineageOS build guide, adding the three repositories to
-the source tree as the guide does for a device that is not in the upstream
-manifest:
+Build with the official LineageOS guide, cloning the three repositories into the source tree:
 
 ```bash
 mkdir -p ~/android/lineage
@@ -50,19 +43,12 @@ lunch lineage_X663-userdebug
 mka bacon -j$(nproc --all)
 ```
 
-`lunch` offers `lineage_X663-{userdebug,eng,user}` and the same three for
-`aosp_X663`. `user` builds stop at the mixed-build neverallow assertion: AOSP
-rejects `SELINUX_IGNORE_NEVERALLOWS` in `user` builds, and the 19.1 policy is
-checked against the 31.0 prebuilts.
-
-Useful image targets:
+## 🖼️ Images
 
 ```bash
 m bootimage dtboimage systemimage system_extimage productimage vendorimage \
   vbmetaimage vbmeta_systemimage vbmeta_vendorimage superimage
 ```
-
-`vendorimage` builds an ext4 vendor filesystem; it does not copy a prebuilt image.
 
 ## ⚖️ Licensing
 
