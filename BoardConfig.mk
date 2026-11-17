@@ -187,3 +187,8 @@ BOARD_VENDOR_SEPOLICY_DIRS := $(X663_SEPOLICY_DIRS)
 
 # Vendor image
 VENDOR_SECURITY_PATCH := 2023-09-05
+
+# Stock copies that collide with a built module
+PRODUCT_COPY_FILES := $(filter-out \
+    vendor/infinix/X663/proprietary/lib64/libtinycompress.so:$(_vendor_path_placeholder)/lib64/libtinycompress.so \
+    ,$(PRODUCT_COPY_FILES))
