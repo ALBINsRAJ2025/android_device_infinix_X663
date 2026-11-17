@@ -45,35 +45,6 @@ endif
 
 PRODUCT_PRECOMPILED_SEPOLICY := false
 
-PRODUCT_PACKAGES := $(filter-out \
-    selinux_policy_nonsystem \
-    vendor_compatibility_matrix.xml \
-    android.hardware.cas@1.2-service \
-    android.hardware.media.omx@1.0-service \
-    audio.primary.default \
-    boringssl_self_test_vendor \
-    dumpsys_vendor \
-    gralloc.default \
-    libaudiopreprocessing \
-    local_time.default \
-    power.default \
-    shell_and_utilities_vendor \
-    vibrator.default \
-    libbundlewrapper \
-    libclearkeycasplugin \
-    libdownmix \
-    libdrmclearkeyplugin \
-    libdynproc \
-    libeffectproxy \
-    libeffects \
-    libhapticgenerator \
-    libldnhncr \
-    libreference-ril \
-    libreverbwrapper \
-    libril \
-    libvisualizer \
-    ,$(PRODUCT_PACKAGES))
-
 # Recovery-as-boot fstab
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/rootdir/etc/fstab.mt6768:$(TARGET_COPY_OUT_RECOVERY)/root/first_stage_ramdisk/fstab.mt6768

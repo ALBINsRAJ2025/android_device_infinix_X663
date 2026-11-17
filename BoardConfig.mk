@@ -187,3 +187,33 @@ BOARD_VENDOR_SEPOLICY_DIRS := $(X663_SEPOLICY_DIRS)
 
 # Vendor image
 VENDOR_SECURITY_PATCH := 2023-09-05
+
+# Platform packages replaced by the stock payload
+PRODUCT_PACKAGES := $(filter-out \
+    selinux_policy_nonsystem \
+    vendor_compatibility_matrix.xml \
+    android.hardware.cas@1.2-service \
+    android.hardware.media.omx@1.0-service \
+    audio.primary.default \
+    boringssl_self_test_vendor \
+    dumpsys_vendor \
+    gralloc.default \
+    libaudiopreprocessing \
+    local_time.default \
+    power.default \
+    shell_and_utilities_vendor \
+    vibrator.default \
+    libbundlewrapper \
+    libclearkeycasplugin \
+    libdownmix \
+    libdrmclearkeyplugin \
+    libdynproc \
+    libeffectproxy \
+    libeffects \
+    libhapticgenerator \
+    libldnhncr \
+    libreference-ril \
+    libreverbwrapper \
+    libril \
+    libvisualizer \
+    ,$(PRODUCT_PACKAGES))
