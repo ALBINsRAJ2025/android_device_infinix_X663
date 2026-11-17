@@ -180,16 +180,23 @@ BOARD_VNDK_VERSION := current
 X663_SEPOLICY_PORT ?= false
 X663_SELINUX_PERMISSIVE ?= false
 
+# The stock vendor policy was written against platform policy version 31.0
+# (stock_firmware/unpacked/sepolicy/plat_sepolicy_vers.txt contains "31.0"),
+# and the stock vendor manifest states the same version in its <sepolicy>
+# element. Setting this unconditionally keeps assemble_vintf from trying to
+# stamp the platform's 32.0 over it ("Cannot override existing value 31.0 with
+# BOARD_SEPOLICY_VERS (which is 32.0)") and makes system/sepolicy build the
+# platform and vendor policies separately against prebuilts/api/31.0, which is
+# the supported mixed build for a 31.0 vendor. It must use the "NN.m" form:
+# system/sepolicy/Android.mk:89-93 documents it, and
+# system/sepolicy/prebuilt_policy.mk:33 looks up
+# prebuilts/api/$(BOARD_SEPOLICY_VERS); a bare "31" would name the nonexistent
+# prebuilts/api/31.
+BOARD_SEPOLICY_VERS := 31.0
+
 X663_SEPOLICY_DIRS :=
 ifeq ($(X663_SEPOLICY_PORT),true)
 X663_SEPOLICY_DIRS += $(DEVICE_PATH)/sepolicy
-# The stock vendor policy was written against platform policy version 31.0
-# (stock_firmware/unpacked/sepolicy/plat_sepolicy_vers.txt contains "31.0").
-# BOARD_SEPOLICY_VERS must use the "NN.m" form: system/sepolicy/Android.mk:89-93
-# documents it, and system/sepolicy/prebuilt_policy.mk:33 looks up
-# prebuilts/api/$(BOARD_SEPOLICY_VERS).  A bare "31" would name the nonexistent
-# prebuilts/api/31 and force a mixed build against no platform policy at all.
-BOARD_SEPOLICY_VERS := 31.0
 endif
 ifeq ($(X663_SELINUX_PERMISSIVE),true)
 # userdebug/eng only; marks every policy type permissive.
