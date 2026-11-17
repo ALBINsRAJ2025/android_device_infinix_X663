@@ -46,9 +46,6 @@ mka bacon -j$(nproc --all)
 ## ⚖️ Licensing
 
 Original device-tree files are licensed under **Apache-2.0** (see `LICENSE` and `NOTICE`).
-The stock APN database, the prebuilt `mtk_plpath_utils` binary and stock-derived
-recovery/fstab files are third-party material and are not relicensed. Files marked
-`LicenseRef-Stock-Firmware` remain subject to Infinix/Transsion terms.
 
 ## ⚠️ Notes and limitations
 
