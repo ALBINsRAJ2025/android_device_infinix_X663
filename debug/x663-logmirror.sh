@@ -1,30 +1,10 @@
 #!/system/bin/sh
 # SPDX-License-Identifier: Apache-2.0
-#
-# X663 external log mirror (see debug-bootloop.mk).
-# Started by init at "on init" as root in the su domain (userdebug/eng only).
-#
-# /metadata is the only storage guaranteed to be available this early, so it
-# stays the authoritative early-boot log set.  This service watches for
-# external storage and, once it is writable:
-#   * mirrors /metadata/x663-logs to <external>/x663-logs/metadata/
-#   * runs a second logcat follower at <external>/x663-logs/logcat-external
-#
-# Supported locations, in order:
-#   /storage/<uuid>          removable SD card, user-visible FUSE path
-#   /mnt/media_rw/<uuid>     removable SD card, raw vold mount
-#   /mnt/expand/<uuid>       adopted storage
-#   /data/media/0            emulated external storage (visible as /sdcard)
-#
-# If the device hard-loops before vold mounts external storage, the mirror has
-# no writable target yet.  The /metadata copy still survives and is mirrored
-# on the next boot that reaches post-fs-data.
 
 SRC=/metadata/x663-logs
 POLL=5
 SYNC_EVERY=6
 
-# Print the first writable x663-logs directory, or nothing.
 find_ext() {
     for base in /storage/* /mnt/media_rw/* /mnt/expand/*; do
         case "$base" in
@@ -97,8 +77,6 @@ while true; do
     while kill -0 "$LPID" 2>/dev/null; do
         sleep "$POLL"
 
-        # If storage disappeared or a better path appeared, stop this
-        # follower and let the outer loop pick the new target.
         CUR="$(find_ext)"
         if [ "$CUR" != "$DST" ]; then
             kill "$LPID" 2>/dev/null

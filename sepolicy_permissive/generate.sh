@@ -1,6 +1,4 @@
 #!/usr/bin/env bash
-# Regenerate sepolicy_permissive/permissive.te from the AOSP 12.1 platform
-# type list and the ported vendor policy.
 set -euo pipefail
 cd "$(dirname "$0")/.."
 python3 - <<'PY'

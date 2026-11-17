@@ -1,7 +1,4 @@
 # SPDX-License-Identifier: Apache-2.0
-#
-# X663 first-boot debug logging (see debug-bootloop.mk).
-# Only installed on userdebug/eng builds.
 
 service x663-logd /system/bin/sh /system/bin/x663-logd.sh
     class core
@@ -29,39 +26,19 @@ service x663-logmirror /system/bin/sh /system/bin/x663-logmirror.sh
     oom_score_adjust -1000
     disabled
 
-# logd is started by AOSP init.rc in "on init", before every other service.
-# /metadata is a first_stage_mount (fstab.mt6768), so it is already mounted
-# when the second-stage "on init" trigger runs.  This action is parsed after
-# init.rc, so it runs in the same trigger after logd has been started, and
-# well before fs, post-fs, post-fs-data, zygote and system_server.
 on init
     start x663-logd
     start x663-logmirror
 
-# vold mounts external storage during post-fs-data/boot.  The mirror service
-# starts early and polls for the first writable path; these starts cover an
-# init restart and any path that only appears after the initial trigger.
 on post-fs-data
     start x663-logmirror
 
-# Full snapshot in /data/local/tmp and on external storage, and a marker that
-# tells the next boot this one reached the home screen.
 on property:sys.boot_completed=1
     start x663-logreport
 
-# Persistent properties are loaded after build.prop and can contain a stale
-# persist.sys.usb.config=none (stock user builds) or another non-adb mode.
-# ro.persistent_properties.ready is set by the property service after every
-# persistent value has been applied, so re-assert adb at that point.  That is
-# before AdbService is constructed in system_server and reads the value.
 on property:ro.persistent_properties.ready=true
     setprop persist.sys.usb.config adb
 
-# /system/etc/init is parsed after init.rc (and its imported init.usb.rc), so
-# this action runs after the stock "on boot" action that copies
-# persist.sys.usb.config into sys.usb.config.  It guarantees both the
-# persisted value and the active USB function are adb, which starts adbd
-# through the standard init.usb.rc/init.usb.configfs.rc triggers.
 on boot
     start x663-logmirror
     setprop persist.sys.usb.config adb

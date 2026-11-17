@@ -1,8 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (C) 2026 ALBINsRAJ2025
-#
-# Recovery ramdisk modules for the Infinix Note 11 (X663).
-#
 
 LOCAL_PATH := $(call my-dir)
 
@@ -14,7 +11,6 @@ LOCAL_SRC_FILES := root/$(LOCAL_MODULE)
 LOCAL_MODULE_PATH := $(TARGET_RECOVERY_OUT)/root
 include $(BUILD_PREBUILT)
 
-# MTK preloader and bootloader symlink helper.
 include $(CLEAR_VARS)
 LOCAL_MODULE := mtk_plpath_utils
 LOCAL_MODULE_TAGS := optional

@@ -1,43 +1,10 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: Apache-2.0
-#
-# Convert the stock MediaTek vendor SELinux policy from CIL to policy
-# (.te) sources for the Infinix Note 11 (X663).
-#
-# Input   : the stock vendor_sepolicy.cil from the firmware package
-#           (also shipped as vendor/infinix/X663/proprietary/etc/selinux/
-#            vendor_sepolicy.cil)
-# Output  : device/infinix/X663/sepolicy/vendor.te
-#
-# Why: AOSP 12 compiles the vendor policy from .te sources found in
-# BOARD_VENDOR_SEPOLICY_DIRS; a prebuilt CIL cannot be fed into the policy
-# build.  The stock CIL is the vendor policy after AOSP's attributization
-# and version mapping, so this converter
-#
-#   * keeps every rule of the stock policy,
-#   * drops the declarations that the AOSP platform policy already provides
-#     (duplicates would abort the build),
-#   * drops the neverallow statements (AOSP runs the neverallow check
-#     separately, and the CIL already carries the platform's result),
-#   * drops the roletype statements (AOSP has the single role "r"; the
-#     role association is expressed through the domain attribute),
-#   * expands the MediaTek typealias pair into the real type name.
-#
-# The AOSP-provided name lists are taken from the AOSP 12.1 platform
-# policy sources (public/, private/, vendor/) and from the prebuilt v31
-# platform policy (which supplies the versioned "<name>_31_0" names).
-#
-# Usage: convert_cil_to_te.py <vendor_sepolicy.cil> <out.te> [--types F] [--attrs F]
 
 import argparse
 import os
 import re
 import sys
-
-# --------------------------------------------------------------------------
-# s-expression parsing
-# --------------------------------------------------------------------------
-
 
 def parse_cil(text):
     """Return the list of top-level s-expressions as nested lists."""
@@ -48,7 +15,6 @@ def parse_cil(text):
     while i < n:
         c = text[i]
         if c == ';':
-            # comment to end of line
             j = text.find('\n', i)
             i = n if j < 0 else j + 1
             continue
@@ -79,14 +45,11 @@ def parse_cil(text):
         raise ValueError('unbalanced ( in input')
     return top
 
-
 def head(expr):
     return expr[0] if expr and isinstance(expr[0], str) else ''
 
-
 def atoms(expr):
     return [x for x in expr[1:] if isinstance(x, str)]
-
 
 def class_perms(expr, kind='allow'):
     """Extract (class, [perms], [xperms]) from a CIL rule body.
@@ -110,18 +73,15 @@ def class_perms(expr, kind='allow'):
             cls = strings[0] if strings else None
             rest = strings[1:]
             if kind == 'allowx':
-                # (class perm perm ... (xperms))
                 perms = rest
                 if lists:
                     xperms = [s for s in lists[0] if isinstance(s, str)]
             else:
-                # (class (perms))
                 if lists:
                     perms = [s for s in lists[0] if isinstance(s, str)]
                 else:
                     perms = rest
             continue
-        # any further nested list holds more permissions
         for l in lists:
             vals = [s for s in l if isinstance(s, str)]
             if not perms:
@@ -130,23 +90,15 @@ def class_perms(expr, kind='allow'):
                 xperms = vals
     return cls, perms, xperms
 
-
 def fmt_perms(perms):
     if not perms:
         return ''
     return ' { %s }' % ' '.join(perms)
 
-
 def fmt_xperms(xperms):
     if not xperms:
         return ''
     return ' { %s }' % ' '.join(xperms)
-
-
-# --------------------------------------------------------------------------
-# converter
-# --------------------------------------------------------------------------
-
 
 def main():
     ap = argparse.ArgumentParser()
@@ -181,7 +133,6 @@ def main():
     def note(key):
         counts[key] = counts.get(key, 0) + 1
 
-    # pass 1: collect the MediaTek typealias pair
     for e in stmts:
         if head(e) == 'typealiasactual':
             a = atoms(e)
@@ -225,8 +176,6 @@ def main():
                 if isinstance(item, list):
                     members.extend(expand(s) for s in item if isinstance(s, str))
             for m in members:
-                # AOSP already provides the membership when both ends are
-                # provided by the platform policy
                 if m in aosp_types or m in aosp_attrs:
                     if attr in aosp_attrs or attr in aosp_types:
                         note('typeattributeset:already-in-AOSP')
@@ -265,7 +214,6 @@ def main():
                         fmt_perms(perms), fmt_xperms(xperms)))
             note('allowx')
         elif kind == 'typetransition':
-            # CIL form: typetransition SRC TGT CLASS NEWTYPE (flat)
             a = atoms(e)
             if len(a) < 4:
                 note('typetransition:unparsed')
@@ -274,8 +222,6 @@ def main():
                        (expand(a[0]), expand(a[1]), a[2], expand(a[3])))
             note('type_transition')
         elif kind == 'genfscon':
-            # CIL form: genfscon FS PATH (u ROLE TYPE ((S0) (S0)))
-            # policy form: genfscon FS PATH u:ROLE:TYPE:S0[.cats]
             a = atoms(e)
             ctx = None
             for item in e[1:]:
@@ -355,7 +301,6 @@ def main():
     for k in sorted(counts):
         print('  %-38s %d' % (k, counts[k]))
     return 0
-
 
 if __name__ == '__main__':
     sys.exit(main())
