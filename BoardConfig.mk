@@ -107,6 +107,13 @@ TARGET_COPY_OUT_SYSTEM_EXT := system_ext
 BUILD_BROKEN_ELF_PREBUILT_PRODUCT_COPY_FILES := true
 BUILD_BROKEN_VINTF_PRODUCT_COPY_FILES := true
 BUILD_BROKEN_DUP_SYSPROP := true
+# The stock vendor tree is installed with PRODUCT_COPY_FILES, and Android 12's
+# vendor modules declare install rules for the same paths (applypatch, awk,
+# shell_and_utilities_vendor, ...). Soong passes --werror_overriding_commands
+# to kati unless this is true, so the first collision aborts the build before
+# compiling. With it, kati warns and keeps the copy, i.e. the stock file wins;
+# paths where the AOSP module must win are excluded in X663-vendor.mk.
+BUILD_BROKEN_DUP_RULES := true
 
 # Virtual A/B and dynamic partitions
 BOARD_SUPER_PARTITION_SIZE := 7755374592
