@@ -58,6 +58,9 @@ endif
 PRODUCT_PRECOMPILED_SEPOLICY := false
 
 # AOSP packages that would overwrite stock vendor files.
+# applypatch is deliberately absent: the stock vendor/bin/applypatch copy is
+# filtered in X663-vendor.mk and AOSP's applypatch module provides that path,
+# because kati rejects two rules for the same target.
 PRODUCT_PACKAGES := $(filter-out \
     selinux_policy_nonsystem \
     vendor_compatibility_matrix.xml \
@@ -66,7 +69,6 @@ PRODUCT_PACKAGES := $(filter-out \
     audio.primary.default \
     boringssl_self_test_vendor \
     dumpsys_vendor \
-    applypatch \
     gralloc.default \
     libaudiopreprocessing \
     local_time.default \
