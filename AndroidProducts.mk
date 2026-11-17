@@ -8,4 +8,8 @@ PRODUCT_MAKEFILES := \
 
 COMMON_LUNCH_CHOICES := \
     aosp_X663-userdebug \
-    lineage_X663-userdebug
+    aosp_X663-eng \
+    aosp_X663-user \
+    lineage_X663-userdebug \
+    lineage_X663-eng \
+    lineage_X663-user
