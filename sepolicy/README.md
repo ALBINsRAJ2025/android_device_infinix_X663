@@ -40,11 +40,18 @@ genfscon/type_transition statements, 0 missing / 0 extra.
 
 ```make
 X663_SEPOLICY_PORT ?= false
+
+X663_SEPOLICY_DIRS :=
 ifeq ($(X663_SEPOLICY_PORT),true)
-BOARD_VENDOR_SEPOLICY_DIRS += $(DEVICE_PATH)/sepolicy
-BOARD_SEPOLICY_VERS := 31
+X663_SEPOLICY_DIRS += $(DEVICE_PATH)/sepolicy
 endif
+BOARD_VENDOR_SEPOLICY_DIRS := $(X663_SEPOLICY_DIRS)
 ```
+
+`BOARD_SEPOLICY_VERS := 31.0` is set unconditionally in `BoardConfig.mk`: the
+stock vendor policy and the stock vendor manifest are both version 31.0, and
+the mixed build (platform 32.0, vendor 31.0) compiles the ported policy against
+`prebuilts/api/31.0`.
 
 Off (default): platform policy + AOSP generic vendor policy; the missing
 vendor rules appear as `avc: denied`. On: compile `vendor.te`; the first build
