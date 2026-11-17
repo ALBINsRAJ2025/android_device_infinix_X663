@@ -53,6 +53,24 @@ stock vendor policy and the stock vendor manifest are both version 31.0, and
 the mixed build (platform 32.0, vendor 31.0) compiles the ported policy against
 `prebuilts/api/31.0`.
 
+## Mixed-build compat
+
+The mixed build also compiles Lineage's current `system_ext` policy (32.0)
+against the 31.0 platform prebuilts. `device/lineage/sepolicy/common/private/
+file.te` uses the attribute `sdcard_posix_contextmount_type`, which the 31.0
+prebuilts do not declare, so `sepolicy_neverallows_vendor` stops parsing.
+`sepolicy_compat/public/attributes` declares it and `BoardConfig.mk` prepends
+that directory:
+
+```make
+BOARD_SYSTEM_EXT_PUBLIC_PREBUILT_DIRS = $(DEVICE_PATH)/sepolicy_compat/public $(SYSTEM_EXT_PUBLIC_POLICY)
+```
+
+The variable is recursive on purpose: it is read after
+`SYSTEM_EXT_PUBLIC_POLICY` is filled in, so the Lineage `system_ext` public
+policy stays in the list. Only mixed builds read it; normal builds never see
+the directory.
+
 Off (default): platform policy + AOSP generic vendor policy; the missing
 vendor rules appear as `avc: denied`. On: compile `vendor.te`; the first build
 reports the symbols only MTK's platform policy provided, and they go into
