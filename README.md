@@ -28,17 +28,22 @@
 ## 🔨 Build
 
 ```bash
-repo init -u https://android.googlesource.com/platform/manifest -b android-12.0.0_rXX
+repo init -u https://github.com/LineageOS/android.git -b lineage-19.1
 repo sync -j8
 
-cp -a device/infinix/X663   aosp/device/infinix/
-cp -a vendor/infinix/X663   aosp/vendor/infinix/
-cp -a kernel/infinix/X663   aosp/kernel/infinix/
-cd aosp
+cp -a device/infinix/X663   lineage/device/infinix/
+cp -a vendor/infinix/X663   lineage/vendor/infinix/
+cp -a kernel/infinix/X663   lineage/kernel/infinix/
+cd lineage
 . build/envsetup.sh
-lunch aosp_X663-userdebug
+lunch lineage_X663-userdebug
 m -j$(nproc)
 ```
+
+`lunch` offers `lineage_X663-{userdebug,eng,user}` and the same three for
+`aosp_X663`. `user` builds stop at the mixed-build neverallow assertion: AOSP
+rejects `SELINUX_IGNORE_NEVERALLOWS` in `user` builds, and the 19.1 policy is
+checked against the 31.0 prebuilts.
 
 Useful image targets:
 
