@@ -166,6 +166,11 @@ $(error X663_SELINUX_PERMISSIVE is allowed only in userdebug and eng)
 endif
 endif
 
+# Build-time neverallow assertions (19.1 mix)
+ifneq ($(TARGET_BUILD_VARIANT),user)
+SELINUX_IGNORE_NEVERALLOWS := true
+endif
+
 BOARD_SEPOLICY_VERS := 31.0
 
 # Mixed-build policy prebuilts

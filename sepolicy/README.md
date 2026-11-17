@@ -79,6 +79,34 @@ the directory. The pair above is the complete set: every identifier used by
 `device/lineage/sepolicy/common` and by the 32.0 `system/sepolicy/vendor`
 sources resolves against the 31.0 prebuilts once both are declared.
 
+## Build-time neverallow assertions
+
+The 31.0 prebuilts still carry the Android 12.0 neverallows, while the
+`system_ext` policy compiled in this mixed build is Lineage's 12L policy.
+Android 12L's current `public/domain.te` exempts the `recovery` and
+`sdcard_posix_contextmount_type` rules below; the 31.0 prebuilts do not, and
+reject them:
+
+| Rejected rule | Rejecting prebuilt |
+| --- | --- |
+| `allow vold sdcard_posix:filesystem relabelto` | `prebuilts/api/31.0/public/domain.te:512` |
+| `allow recovery rootfs:file { create_file_perms link }` | `prebuilts/api/31.0/public/domain.te:508` |
+| `allow recovery self:capability mknod` | `prebuilts/api/31.0/public/domain.te:383` |
+
+`BoardConfig.mk` turns the build-time assertions off for every variant except
+`user`:
+
+```make
+ifneq ($(TARGET_BUILD_VARIANT),user)
+SELINUX_IGNORE_NEVERALLOWS := true
+endif
+```
+
+The switch affects the compile-time check only. No domain becomes permissive,
+every `allow` rule is kept, and the policy installed on the device is still
+enforcing. `user` builds keep the assertions and still stop at the same three
+rules until the vendor policy port replaces the mixed `system_ext` input.
+
 Off (default): platform policy + AOSP generic vendor policy; the missing
 vendor rules appear as `avc: denied`. On: compile `vendor.te`; the first build
 reports the symbols only MTK's platform policy provided, and they go into
