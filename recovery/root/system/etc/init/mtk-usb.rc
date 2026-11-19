@@ -1,30 +1,27 @@
 # SPDX-License-Identifier: Apache-2.0 AND LicenseRef-Stock-Firmware
 # Copyright (C) 2026 ALBINsRAJ2025
-# Derived from stock X663 firmware and the working X663 TWRP port; see NOTICE.
+# Derived from stock X663 firmware and AOSP's own recovery init; see NOTICE.
 #
-# Recovery USB bring-up for the MTK musb controller.
+# UDC binding.  /system/etc/init/hw/init.rc writes ${sys.usb.controller} into
+# /config/usb_gadget/g1/UDC and nothing in the ramdisk sets that property, so
+# the gadget is created and never bound: adb and fastbootd stay dark.
 #
-# AOSP recovery never sets sys.usb.controller, so the configfs gadget is built
-# but no UDC is bound: adb and fastbootd stay dead.  The stock vendor script
-# (init.mt6768.usb.rc) sets vendor.usb.controller, which recovery does not read.
-# The working TWRP port sets sys.usb.controller instead; do the same here.
+# musb-hdrc is this part's controller, from the firmware itself: the stock
+# recovery script writes /sys/class/udc/musb-hdrc/device/cmode, and the stock
+# vendor script sets vendor.usb.controller "musb-hdrc".
 #
-# This file lives in /system/etc/init/ so init always parses it, whether or not
-# ro.hardware resolves to mt6768.
+# kernel_init_done is the parameter the stock vendor script raises at
+# early-init before any gadget work; the kernel carries it as
+# musb_hdrc.kernel_init_done.
 
 on early-init
-    # MTK musb: tell the controller driver that userspace has started
     write /sys/module/musb_hdrc/parameters/kernel_init_done 1
 
 on init
-    setprop sys.usb.configfs 1
     setprop sys.usb.controller "musb-hdrc"
-    setprop sys.usb.ffs.aio_compat 0
 
-on post-fs
-    # Google VID for recovery adb and fastboot, as stock recovery uses
-    setprop sys.usb.vid "0x18D1"
-
-on post-fs-data
-    # Bring adb up without a key press so a dead UI can still be diagnosed
+on fs
+    # AOSP recovery raises sys.usb.config only when the panel offers
+    # "Apply update from ADB"; raise it here so a dead panel can still be
+    # diagnosed.  Stock recovery does the same with a bare `start adbd`.
     setprop sys.usb.config adb
