@@ -79,7 +79,9 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PACKAGES += \
     init.recovery.mt6768.rc \
     mtk_plpath_utils \
-    mtk-plpath-utils.rc
+    mtk-plpath-utils.rc \
+    mtk-usb.rc \
+    ueventd.mt6768.rc
 
 ifeq ($(wildcard vendor/lineage/build/tasks/kernel.mk),)
 PRODUCT_COPY_FILES += \

@@ -50,7 +50,7 @@ BOARD_KERNEL_TAGS_OFFSET := 0x0bc08000
 BOARD_KERNEL_SECOND_OFFSET := 0x00000000
 BOARD_DTB_OFFSET := 0x0bc08000
 
-BOARD_KERNEL_CMDLINE := bootopt=64S3,32N2,64N2 androidboot.init_fatal_reboot_target=recovery
+BOARD_KERNEL_CMDLINE := bootopt=64S3,32N2,64N2 androidboot.hardware=mt6768 androidboot.init_fatal_reboot_target=recovery
 
 TARGET_KERNEL_SOURCE :=
 TARGET_PREBUILT_KERNEL := kernel/infinix/X663/Image.gz
@@ -72,6 +72,7 @@ BOARD_MKBOOTIMG_ARGS += --dtb_offset $(BOARD_DTB_OFFSET)
 BOARD_MKBOOTIMG_ARGS += --board "CY-X663-H6915"
 
 # Partitions
+# Boot partition
 BOARD_BOOTIMAGE_PARTITION_SIZE := 33554432
 
 BOARD_SYSTEMIMAGE_FILE_SYSTEM_TYPE := ext4

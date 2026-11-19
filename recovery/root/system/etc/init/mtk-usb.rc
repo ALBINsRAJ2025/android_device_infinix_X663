@@ -1,0 +1,30 @@
+# SPDX-License-Identifier: Apache-2.0 AND LicenseRef-Stock-Firmware
+# Copyright (C) 2026 ALBINsRAJ2025
+# Derived from stock X663 firmware and the working X663 TWRP port; see NOTICE.
+#
+# Recovery USB bring-up for the MTK musb controller.
+#
+# AOSP recovery never sets sys.usb.controller, so the configfs gadget is built
+# but no UDC is bound: adb and fastbootd stay dead.  The stock vendor script
+# (init.mt6768.usb.rc) sets vendor.usb.controller, which recovery does not read.
+# The working TWRP port sets sys.usb.controller instead; do the same here.
+#
+# This file lives in /system/etc/init/ so init always parses it, whether or not
+# ro.hardware resolves to mt6768.
+
+on early-init
+    # MTK musb: tell the controller driver that userspace has started
+    write /sys/module/musb_hdrc/parameters/kernel_init_done 1
+
+on init
+    setprop sys.usb.configfs 1
+    setprop sys.usb.controller "musb-hdrc"
+    setprop sys.usb.ffs.aio_compat 0
+
+on post-fs
+    # Google VID for recovery adb and fastboot, as stock recovery uses
+    setprop sys.usb.vid "0x18D1"
+
+on post-fs-data
+    # Bring adb up without a key press so a dead UI can still be diagnosed
+    setprop sys.usb.config adb

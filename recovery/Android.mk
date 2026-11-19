@@ -29,3 +29,19 @@ LOCAL_MODULE_CLASS := ETC
 LOCAL_SRC_FILES := root/system/etc/init/$(LOCAL_MODULE)
 LOCAL_MODULE_PATH := $(TARGET_RECOVERY_OUT)/root/system/etc/init
 include $(BUILD_PREBUILT)
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := mtk-usb.rc
+LOCAL_MODULE_TAGS := optional
+LOCAL_MODULE_CLASS := ETC
+LOCAL_SRC_FILES := root/system/etc/init/$(LOCAL_MODULE)
+LOCAL_MODULE_PATH := $(TARGET_RECOVERY_OUT)/root/system/etc/init
+include $(BUILD_PREBUILT)
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := ueventd.mt6768.rc
+LOCAL_MODULE_TAGS := optional
+LOCAL_MODULE_CLASS := ETC
+LOCAL_SRC_FILES := root/$(LOCAL_MODULE)
+LOCAL_MODULE_PATH := $(TARGET_RECOVERY_OUT)/root
+include $(BUILD_PREBUILT)
