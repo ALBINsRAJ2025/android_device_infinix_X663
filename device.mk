@@ -52,6 +52,11 @@ PRODUCT_PACKAGES_DEBUG += \
 PRODUCT_PACKAGES += \
     fastbootd
 
+# Recovery boot/health passthrough HALs
+PRODUCT_PACKAGES += \
+    android.hardware.boot@1.1-impl.recovery \
+    android.hardware.health@2.1-impl.recovery
+
 PRODUCT_SHIPPING_API_LEVEL := 30
 PRODUCT_CHARACTERISTICS := phone
 
