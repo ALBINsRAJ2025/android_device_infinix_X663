@@ -81,7 +81,10 @@ PRODUCT_PACKAGES += \
     mtk_plpath_utils \
     mtk-plpath-utils.rc \
     mtk-usb.rc \
-    ueventd.mt6768.rc
+    ueventd.mt6768.rc \
+    android.hardware.boot@1.2.so \
+    libmtk_bsg.so \
+    android.hardware.boot@1.0-impl-1.2-mtkimpl.so
 
 ifeq ($(wildcard vendor/lineage/build/tasks/kernel.mk),)
 PRODUCT_COPY_FILES += \
