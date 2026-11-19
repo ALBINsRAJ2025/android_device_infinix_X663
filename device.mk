@@ -30,10 +30,7 @@ DEVICE_PACKAGE_OVERLAYS += $(LOCAL_PATH)/overlay
 PRODUCT_USE_DYNAMIC_PARTITIONS := true
 PRODUCT_BUILD_SUPER_PARTITION := true
 $(call inherit-product, $(SRC_TARGET_DIR)/product/virtual_ab_ota/launch.mk)
-PRODUCT_VIRTUAL_AB_COMPRESSION := true
-
-PRODUCT_PACKAGES += \
-    snapuserd
+$(call inherit-product, $(SRC_TARGET_DIR)/product/virtual_ab_ota/compression_retrofit.mk)
 
 PRODUCT_SHIPPING_API_LEVEL := 30
 PRODUCT_CHARACTERISTICS := phone
