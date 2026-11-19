@@ -18,3 +18,5 @@ $(X663_INIT_OUT)/$(1): $(X663_INIT_SRC)/$(1)
 endef
 
 $(foreach rc,$(X663_INIT_RC),$(eval $(call x663-filter-init-rc,$(rc))))
+
+include $(call all-subdir-makefiles)
