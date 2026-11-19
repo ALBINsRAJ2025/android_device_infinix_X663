@@ -10,9 +10,6 @@ DEVICE_PACKAGE_OVERLAYS += device/infinix/X663/overlay-lineage
 
 PRODUCT_PACKAGES := $(filter-out apns-conf.xml,$(PRODUCT_PACKAGES))
 
-# CAS: stock ships the lazy variant only
-PRODUCT_PACKAGES := $(filter-out android.hardware.cas@1.2-service,$(PRODUCT_PACKAGES))
-
 PRODUCT_NAME := lineage_X663
 PRODUCT_DEVICE := X663
 PRODUCT_BRAND := Infinix
