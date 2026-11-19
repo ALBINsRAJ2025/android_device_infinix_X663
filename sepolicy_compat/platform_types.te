@@ -1,0 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+ifdef(`target_recovery', `
+system_restricted_prop(hypervisor_prop)
+type vehicle_binding_util_exec, exec_type, file_type, system_file_type;
+')
