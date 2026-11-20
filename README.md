@@ -1,4 +1,4 @@
-#📱Infinix Note 11 X663
+# 📱 Infinix Note 11 X663
 
 **Device tree for the Infinix Note 11 — MediaTek MT6768 / Helio G88 (MT6769H), Android 12.**
 
