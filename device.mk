@@ -53,7 +53,6 @@ PRODUCT_PACKAGES += \
 
 # Recovery boot/health passthrough HALs
 PRODUCT_PACKAGES += \
-    android.hardware.boot@1.1-impl.recovery \
     android.hardware.health@2.1-impl.recovery
 
 PRODUCT_SHIPPING_API_LEVEL := 30
