@@ -22,7 +22,9 @@
 
 ## 🔨 Build
 
-Build with the official LineageOS guide, cloning the three repositories into the source tree:
+Build with the official LineageOS guide, cloning the two repositories into the source tree.
+The prebuilt kernel payload (`Image.gz`, `dtb/`, `dtbo.img`, `defconfig`) ships inside this
+tree under `kernel/`, so no separate kernel repository is needed:
 
 ```bash
 mkdir -p ~/android/lineage
@@ -35,8 +37,6 @@ git clone https://github.com/ALBINsRAJ2025/android_device_infinix_X663 \
     -b lineage-19.1 device/infinix/X663
 git clone https://github.com/ALBINsRAJ2025/android_vendor_infinix_X663 \
     -b lineage-19.1 vendor/infinix/X663
-git clone https://github.com/ALBINsRAJ2025/android_kernel_infinix_X663 \
-    -b lineage-19.1 kernel/infinix/X663
 
 source build/envsetup.sh
 lunch lineage_X663-userdebug

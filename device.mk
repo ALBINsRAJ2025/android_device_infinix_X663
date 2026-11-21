@@ -86,7 +86,7 @@ PRODUCT_PACKAGES += \
 
 ifeq ($(wildcard vendor/lineage/build/tasks/kernel.mk),)
 PRODUCT_COPY_FILES += \
-    kernel/infinix/X663/Image.gz:kernel
+    $(DEVICE_PATH)/kernel/Image.gz:kernel
 endif
 
 # First-boot debug logging
