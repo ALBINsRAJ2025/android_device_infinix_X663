@@ -173,6 +173,7 @@ SELINUX_IGNORE_NEVERALLOWS := true
 endif
 
 BOARD_SEPOLICY_VERS := 31.0
+BOARD_SEPOLICY_M4DEFS += board_excludes_fuseblk_sepolicy=true
 
 # Mixed-build policy prebuilts
 BOARD_SYSTEM_EXT_PUBLIC_PREBUILT_DIRS = $(DEVICE_PATH)/sepolicy_compat/public $(SYSTEM_EXT_PUBLIC_POLICY)
