@@ -13,6 +13,12 @@ symlinks; this tree ships what the build installs, under the stock names.
 | `root/init.recovery.mt6768.rc` | `/init.recovery.mt6768.rc` |
 | `root/system/bin/mtk_plpath_utils` | `/system/bin/mtk_plpath_utils` |
 | `root/system/etc/init/mtk-plpath-utils.rc` | `/system/etc/init/mtk-plpath-utils.rc` |
+| `root/system/lib64/libhardware.so` | `/system/lib64/libhardware.so` |
+
+`libhardware.so` (10,728 B, sha256 `c6dbe2e2…c35b74`) is the stock ramdisk copy
+and the `DT_NEEDED` of the stock boot HAL implementation; without it
+`update_engine_sideload` cannot `dlopen` the HAL and the sideload aborts with
+`Error initializing the BootControlInterface`.
 
 First-stage tools (`e2fsck`, `snapuserd`, `fstab.mt6768`) are **not** shipped:
 the build generates its own first-stage ramdisk from this device tree
