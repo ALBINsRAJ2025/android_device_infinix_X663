@@ -4298,6 +4298,12 @@ user: AID_ROOT
 group: AID_ROOT
 caps: 0
 
+[vendor/etc/init/init.x663.rc]
+mode: 0644
+user: AID_ROOT
+group: AID_ROOT
+caps: 0
+
 [vendor/etc/init/hw/init.mt6768.rc]
 mode: 0644
 user: AID_ROOT

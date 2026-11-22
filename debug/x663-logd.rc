@@ -31,6 +31,20 @@ on init
     start x663-logd
     start x663-logmirror
 
+on post-fs
+    setprop vendor.usb.controller "musb-hdrc"
+    setprop sys.usb.configfs 1
+    setprop vendor.usb.acm_cnt 0
+    setprop vendor.usb.acm_enable 0
+    setprop sys.usb.config adb
+
+on late-fs
+    setprop vendor.usb.controller "musb-hdrc"
+    setprop sys.usb.configfs 1
+    setprop vendor.usb.acm_cnt 0
+    setprop vendor.usb.acm_enable 0
+    setprop sys.usb.config adb
+
 on post-fs-data
     start x663-logmirror
 
