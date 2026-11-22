@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0
-# X663 first-boot debug logging
+# First-boot debug logging
 
 service x663-logd /system/bin/sh /system/bin/x663-logd.sh
     class core
@@ -27,11 +27,17 @@ service x663-logmirror /system/bin/sh /system/bin/x663-logmirror.sh
     oom_score_adjust -1000
     disabled
 
+on early-init
+    write /sys/module/musb_hdrc/parameters/kernel_init_done 1
+
 on init
     start x663-logd
     start x663-logmirror
+    setprop sys.usb.controller "musb-hdrc"
+    setprop vendor.usb.controller "musb-hdrc"
 
 on post-fs
+    setprop sys.usb.controller "musb-hdrc"
     setprop vendor.usb.controller "musb-hdrc"
     setprop sys.usb.configfs 1
     setprop vendor.usb.acm_cnt 0
@@ -39,6 +45,7 @@ on post-fs
     setprop sys.usb.config adb
 
 on late-fs
+    setprop sys.usb.controller "musb-hdrc"
     setprop vendor.usb.controller "musb-hdrc"
     setprop sys.usb.configfs 1
     setprop vendor.usb.acm_cnt 0
