@@ -37,20 +37,30 @@ on init
     setprop vendor.usb.controller "musb-hdrc"
 
 on post-fs
+    setprop vendor.usb.vid "0x0E8D"
     setprop sys.usb.controller "musb-hdrc"
     setprop vendor.usb.controller "musb-hdrc"
     setprop sys.usb.configfs 1
     setprop vendor.usb.acm_cnt 0
+    setprop vendor.usb.acm_port0 ""
+    setprop vendor.usb.acm_port1 ""
     setprop vendor.usb.acm_enable 0
+    setprop vendor.usb.clear_port 1
     setprop sys.usb.config adb
+    start adbd
 
 on late-fs
+    setprop vendor.usb.vid "0x0E8D"
     setprop sys.usb.controller "musb-hdrc"
     setprop vendor.usb.controller "musb-hdrc"
     setprop sys.usb.configfs 1
     setprop vendor.usb.acm_cnt 0
+    setprop vendor.usb.acm_port0 ""
+    setprop vendor.usb.acm_port1 ""
     setprop vendor.usb.acm_enable 0
+    setprop vendor.usb.clear_port 1
     setprop sys.usb.config adb
+    start adbd
 
 on post-fs-data
     start x663-logmirror
