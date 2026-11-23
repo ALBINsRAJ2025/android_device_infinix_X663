@@ -56,8 +56,10 @@ PRODUCT_PACKAGES_DEBUG += \
 PRODUCT_PACKAGES += \
     fastbootd
 
-# Recovery boot/health passthrough HALs
+# Recovery passthrough HALs
 PRODUCT_PACKAGES += \
+    android.hardware.boot@1.2-impl.recovery \
+    android.hardware.fastboot@1.1-impl-mock \
     android.hardware.health@2.1-impl.recovery
 
 PRODUCT_SHIPPING_API_LEVEL := 30
@@ -84,11 +86,7 @@ PRODUCT_PACKAGES += \
     mtk_plpath_utils \
     mtk-plpath-utils.rc \
     mtk-usb.rc \
-    ueventd.mt6768.rc \
-    android.hardware.boot@1.2.so \
-    libhardware.so \
-    libmtk_bsg.so \
-    android.hardware.boot@1.0-impl-1.2-mtkimpl.so
+    ueventd.mt6768.rc
 
 ifeq ($(wildcard vendor/lineage/build/tasks/kernel.mk),)
 PRODUCT_COPY_FILES += \
