@@ -22,7 +22,8 @@ PRODUCT_COPY_FILES := $(filter-out \
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/rootdir/etc/fstab.mt6768:$(TARGET_COPY_OUT_VENDOR)/etc/fstab.mt6768 \
     $(LOCAL_PATH)/rootdir/etc/init.x663.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/init.x663.rc \
-    $(LOCAL_PATH)/rootdir/etc/odm_sepolicy.cil:$(TARGET_COPY_OUT_VENDOR)/odm/etc/selinux/odm_sepolicy.cil
+    $(LOCAL_PATH)/rootdir/etc/odm_sepolicy.cil:$(TARGET_COPY_OUT_VENDOR)/odm/etc/selinux/odm_sepolicy.cil \
+    $(LOCAL_PATH)/rootdir/etc/odm_property_contexts:$(TARGET_COPY_OUT_VENDOR)/odm/etc/selinux/odm_property_contexts
 
 # Framework resource overlay
 DEVICE_PACKAGE_OVERLAYS += $(LOCAL_PATH)/overlay
