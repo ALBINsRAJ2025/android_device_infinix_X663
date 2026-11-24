@@ -22,3 +22,15 @@ on late-fs
 
 on post-fs-data
     setprop ro.vendor.soc.model_ready 1
+    setprop ro.crypto.state encrypted
+    setprop ro.crypto.type file
+
+on zygote-start
+    start statsd
+    start netd
+    start zygote
+    start zygote_secondary
+
+on boot
+    class_start main
+    class_start late_start
