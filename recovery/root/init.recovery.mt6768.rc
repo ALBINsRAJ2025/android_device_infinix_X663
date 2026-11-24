@@ -22,6 +22,7 @@ on post-fs
     mount ext4 /dev/block/by-name/md_udc /metadata noatime nosuid nodev wait
     restorecon_recursive /metadata
     mkdir /metadata/vold 0700 root root
+    mkdir /metadata/vold/metadata_encryption 0700 root root
     mkdir /metadata/ota 0700 root system
     mkdir /metadata/ota/snapshots 0700 root system
 
@@ -29,5 +30,6 @@ on property:sys.usb.config=sideload
     mount ext4 /dev/block/by-name/md_udc /metadata noatime nosuid nodev wait
     restorecon_recursive /metadata
     mkdir /metadata/vold 0700 root root
+    mkdir /metadata/vold/metadata_encryption 0700 root root
     mkdir /metadata/ota 0700 root system
     mkdir /metadata/ota/snapshots 0700 root system
