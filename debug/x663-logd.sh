@@ -5,21 +5,8 @@
 LOG_DIR=/metadata/x663-logs
 BOOT_ID_FILE="$LOG_DIR/boot_id"
 
-i=0
-while [ "$i" -lt 20 ]; do
-    mkdir -p "$LOG_DIR" 2>/dev/null && [ -d "$LOG_DIR" ] && break
-    i=$((i + 1))
-    sleep 1
-done
-mkdir -p "$LOG_DIR" 2>/dev/null || exit 1
+mkdir -p "$LOG_DIR" 2>/dev/null
 chmod 0755 "$LOG_DIR" 2>/dev/null
-
-i=0
-while [ "$i" -lt 20 ]; do
-    /system/bin/logcat -b all -d -v threadtime >/dev/null 2>&1 && break
-    i=$((i + 1))
-    sleep 1
-done
 
 BOOT_ID="$(cat /proc/sys/kernel/random/boot_id 2>/dev/null)"
 FIRST_RUN=0
@@ -46,7 +33,7 @@ if [ "$FIRST_RUN" = "1" ]; then
         mkdir -p "$ARCH" 2>/dev/null
         for f in "$LOG_DIR"/logcat "$LOG_DIR"/logcat.* "$LOG_DIR"/boot-*.txt \
                 "$LOG_DIR"/dmesg-boot*.txt "$LOG_DIR"/getprop-boot*.txt \
-                "$LOG_DIR"/last_kmsg-boot*.txt; do
+                "$LOG_DIR"/last_kmsg-boot*.txt "$LOG_DIR"/kmsg-boot*.txt; do
             [ -f "$f" ] && mv -f "$f" "$ARCH"/ 2>/dev/null
         done
         for d in "$LOG_DIR"/pstore-boot*; do
@@ -88,6 +75,9 @@ if [ "$FIRST_RUN" = "1" ]; then
     for f in $(ls -t "$LOG_DIR"/last_kmsg-boot*.txt 2>/dev/null | tail -n +2); do
         rm -f "$f"
     done
+    for f in $(ls -t "$LOG_DIR"/kmsg-boot*.txt 2>/dev/null | tail -n +2); do
+        rm -f "$f"
+    done
     for f in $(ls -dt "$LOG_DIR"/failed-boot-* 2>/dev/null | tail -n +2); do
         rm -rf "$f"
     done
@@ -95,6 +85,8 @@ if [ "$FIRST_RUN" = "1" ]; then
         rm -rf "$f"
     done
 fi
+
+cat /proc/kmsg > "$LOG_DIR/kmsg-boot$COUNT.txt" 2>&1 &
 
 exec /system/bin/logcat -b all -v threadtime \
     -f "$LOG_DIR/logcat" -r 512 -n 4

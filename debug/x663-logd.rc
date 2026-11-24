@@ -31,10 +31,11 @@ on early-init
     write /sys/module/musb_hdrc/parameters/kernel_init_done 1
 
 on init
-    start x663-logd
-    start x663-logmirror
     setprop sys.usb.controller "musb-hdrc"
     setprop vendor.usb.controller "musb-hdrc"
+
+on fs
+    start x663-logd
 
 on post-fs
     setprop vendor.usb.vid "0x0E8D"
@@ -46,24 +47,12 @@ on post-fs
     setprop vendor.usb.acm_port1 ""
     setprop vendor.usb.acm_enable 0
     setprop vendor.usb.clear_port 1
-    setprop sys.usb.config adb
-    start adbd
-
-on late-fs
-    setprop vendor.usb.vid "0x0E8D"
-    setprop sys.usb.controller "musb-hdrc"
-    setprop vendor.usb.controller "musb-hdrc"
-    setprop sys.usb.configfs 1
-    setprop vendor.usb.acm_cnt 0
-    setprop vendor.usb.acm_port0 ""
-    setprop vendor.usb.acm_port1 ""
-    setprop vendor.usb.acm_enable 0
-    setprop vendor.usb.clear_port 1
-    setprop sys.usb.config adb
-    start adbd
 
 on post-fs-data
     start x663-logmirror
+
+on property:apexd.status=activated && property:ro.debuggable=1
+    setprop sys.usb.config adb
 
 on property:sys.boot_completed=1
     start x663-logreport
@@ -74,4 +63,3 @@ on property:ro.persistent_properties.ready=true
 on boot
     start x663-logmirror
     setprop persist.sys.usb.config adb
-    setprop sys.usb.config adb
