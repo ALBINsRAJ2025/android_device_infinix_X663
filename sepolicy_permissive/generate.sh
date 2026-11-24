@@ -1,20 +1,23 @@
 #!/usr/bin/env bash
-# Regenerate permissive.te
 set -euo pipefail
-cd "$(dirname "$0")/.."
-python3 - <<'PY'
+cd "\./.."
+python3 - <<"PY"
 import re
-types=set()
-for l in open('sepolicy/aosp_provided_types.txt'):
-    l=l.strip()
-    if l: types.add(l)
-for line in open('sepolicy/vendor.te'):
-    m=re.match(r'^type\s+(\S+);', line)
-    if m: types.add(m.group(1))
-types.discard('vendor_file')
-with open('sepolicy_permissive/permissive.te','w') as fh:
-    fh.write('# SPDX-License-Identifier: Apache-2.0\n# Permissive domains\n\n')
-    for t in sorted(types):
-        fh.write('permissive %s;\n' % t)
-print('permissive.te: %d types' % len(types))
+domains = set()
+for line in open("sepolicy/vendor.te"):
+    m = re.match(r"^typeattribute\s+(\S+)\s+domain;", line.strip())
+    if m:
+        domains.add(m.group(1))
+    m2 = re.match(r"^type\s+(\S+).*domain.*", line.strip())
+    if m2:
+        domains.add(m2.group(1))
+with open("sepolicy_permissive/permissive.te", "w") as fh:
+    fh.write("# SPDX-License-Identifier: Apache-2.0
+# Permissive domains
+
+")
+    for d in sorted(domains):
+        fh.write(f"permissive {d};
+")
+print(f"permissive.te: {len(domains)} domains")
 PY
