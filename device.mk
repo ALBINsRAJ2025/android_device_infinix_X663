@@ -70,6 +70,14 @@ PRODUCT_EXTRA_VNDK_VERSIONS := 31
 PRODUCT_VENDOR_PROPERTIES += ro.vndk.version=31
 endif
 
+# SoC model properties
+PRODUCT_VENDOR_PROPERTIES += \
+    ro.vendor.soc.manufacturer=Mediatek \
+    ro.vendor.soc.model=MT6768 \
+    ro.vendor.soc.model_ready=1 \
+    ro.soc.manufacturer=Mediatek \
+    ro.soc.model=MT6768
+
 PRODUCT_PRECOMPILED_SEPOLICY := false
 
 # Recovery-as-boot fstab

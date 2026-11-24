@@ -1,5 +1,12 @@
 # SPDX-License-Identifier: Apache-2.0
 
+on early-init
+    setprop ro.vendor.soc.manufacturer Mediatek
+    setprop ro.vendor.soc.model MT6768
+    setprop ro.vendor.soc.model_ready 1
+    setprop ro.soc.manufacturer Mediatek
+    setprop ro.soc.model MT6768
+
 on post-fs
     mkdir /mnt/vendor/persist/mcRegistry 0771 system system
     start mobicore
@@ -12,3 +19,6 @@ on late-fs
     class_start early_hal
     start vendor.keymaster-4-1-trustonic
     start vendor.gatekeeper-1-0
+
+on post-fs-data
+    setprop ro.vendor.soc.model_ready 1
