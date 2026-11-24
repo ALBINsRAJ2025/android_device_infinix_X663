@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0
-# X663 first-boot debug configuration
+# First-boot debug configuration
 
 X663_DEBUG_BOOTLOOP ?= true
 
@@ -10,8 +10,7 @@ PRODUCT_PRODUCT_PROPERTIES += \
     ro.adb.secure=0 \
     ro.logd.kernel=true \
     ro.logd.size=1M \
-    ro.logd.size.kernel=1M \
-    persist.sys.usb.config=adb
+    ro.logd.size.kernel=1M
 
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/debug/x663-logd.rc:$(TARGET_COPY_OUT_SYSTEM)/etc/init/x663-logd.rc \

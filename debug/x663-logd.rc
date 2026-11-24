@@ -57,9 +57,5 @@ on property:apexd.status=activated && property:ro.debuggable=1
 on property:sys.boot_completed=1
     start x663-logreport
 
-on property:ro.persistent_properties.ready=true
-    setprop persist.sys.usb.config adb
-
 on boot
     start x663-logmirror
-    setprop persist.sys.usb.config adb

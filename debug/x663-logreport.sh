@@ -1,11 +1,16 @@
 #!/system/bin/sh
 # SPDX-License-Identifier: Apache-2.0
-# X663 first-boot debug report
+# First-boot debug report
 
 SRC=/metadata/x663-logs
 DST=/data/local/tmp/x663-logs
 
 find_ext() {
+    if [ -d /mnt/sdcard_debug/x663-logs ]; then
+        echo "/mnt/sdcard_debug/x663-logs"
+        return 0
+    fi
+
     for base in /storage/* /mnt/media_rw/* /mnt/expand/*; do
         case "$base" in
             /storage/emulated|/storage/emulated/*|/storage/self|/storage/self/*)
@@ -46,7 +51,8 @@ cp -af /data/anr "$DST"/anr 2>/dev/null
 /system/bin/logcat -b all -d -v threadtime > "$DST/logcat-bootcompleted.txt" 2>&1
 dmesg > "$DST/dmesg-bootcompleted.txt" 2>&1
 getprop > "$DST/getprop-bootcompleted.txt" 2>&1
-ps -A > "$DST/ps-bootcompleted.txt" 2>&1
+ps -A -T -Z > "$DST/ps-bootcompleted.txt" 2>&1
+cat /proc/bootprof > "$DST/bootprof-bootcompleted.txt" 2>&1
 mount > "$DST/mount-bootcompleted.txt" 2>&1
 df -h > "$DST/df-bootcompleted.txt" 2>&1
 timeout 30 dumpsys activity activities > "$DST/dumpsys-activity.txt" 2>&1

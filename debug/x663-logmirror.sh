@@ -1,12 +1,32 @@
 #!/system/bin/sh
 # SPDX-License-Identifier: Apache-2.0
-# X663 external log mirror
+# External log mirror
 
 SRC=/metadata/x663-logs
 POLL=5
 SYNC_EVERY=6
 
 find_ext() {
+    if [ -d /mnt/sdcard_debug/x663-logs ]; then
+        echo "/mnt/sdcard_debug/x663-logs"
+        return 0
+    fi
+
+    for dev in /dev/block/mmcblk1p1 /dev/block/mmcblk1; do
+        if [ -b "$dev" ]; then
+            mkdir -p /mnt/sdcard_debug 2>/dev/null
+            mount -t vfat -o rw,noatime,nodiratime,fmask=0000,dmask=0000 "$dev" /mnt/sdcard_debug 2>/dev/null || \
+            mount -t exfat -o rw,noatime,nodiratime "$dev" /mnt/sdcard_debug 2>/dev/null || \
+            mount -t ext4 -o rw,noatime "$dev" /mnt/sdcard_debug 2>/dev/null
+            if [ $? -eq 0 ]; then
+                mkdir -p /mnt/sdcard_debug/x663-logs 2>/dev/null
+                chmod 0777 /mnt/sdcard_debug/x663-logs 2>/dev/null
+                echo "/mnt/sdcard_debug/x663-logs"
+                return 0
+            fi
+        fi
+    done
+
     for base in /storage/* /mnt/media_rw/* /mnt/expand/*; do
         case "$base" in
             /storage/emulated|/storage/emulated/*|/storage/self|/storage/self/*)
