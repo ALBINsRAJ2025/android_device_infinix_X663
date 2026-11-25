@@ -51,10 +51,3 @@ mka bacon -j$(nproc --all)
 ## ⚖️ Licensing
 
 Original device-tree files are licensed under **Apache-2.0** (see `LICENSE` and `NOTICE`).
-
-## ⚠️ Notes and limitations
-
-- Full ROM build succeeds, but initial boot is currently stuck at splash screen; early init and vendor HAL initialization are being actively investigated.
-- The prebuilt kernel is stock; kernel source was not published with the firmware.
-- The stock vendor policy is version 31 while LineageOS 19.1 platform policy is version 32; runtime fallback and vendor HAL loading are being tuned.
-- AVB uses AOSP test keys and disabled verification for unlocked devices; replace the test keys before distributing production builds.
