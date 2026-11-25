@@ -33,3 +33,7 @@ on property:sys.usb.config=sideload
     mkdir /metadata/vold/metadata_encryption 0700 root root
     mkdir /metadata/ota 0700 root system
     mkdir /metadata/ota/snapshots 0700 root system
+
+service charger /system/bin/charger
+    override
+    disabled
