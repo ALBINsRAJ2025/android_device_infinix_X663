@@ -8,7 +8,7 @@
 
 ---
 
-## Device
+## Device Specifications
 
 | | |
 | --- | --- |
@@ -19,6 +19,11 @@
 | **Partitions** | Virtual A/B, dynamic (`system`, `system_ext`, `product`, `vendor`) |
 | **First API level** | 30 |
 | **Vendor VNDK** | 31 |
+
+## 🚦 Current State / Status
+
+- **Compilation**: **Build completed successfully** (`lineage-19.1` compiles cleanly to flashable zip via `mka bacon`).
+- **Boot Status**: **Stuck at splash screen** (device reaches the initial Infinix boot splash logo, currently under active bring-up / early init debugging).
 
 ## 🔨 Build
 
@@ -49,10 +54,7 @@ Original device-tree files are licensed under **Apache-2.0** (see `LICENSE` and 
 
 ## ⚠️ Notes and limitations
 
-- The trees have **not** been compiled or booted against a full AOSP checkout in this
-  environment; wiring is validated by inspection and stock vendor metadata comparison.
+- Full ROM build succeeds, but initial boot is currently stuck at splash screen; early init and vendor HAL initialization are being actively investigated.
 - The prebuilt kernel is stock; kernel source was not published with the firmware.
-- The stock vendor policy is version 31 while LineageOS 19.1 platform policy is version 32;
-  runtime fallback and vendor HAL loading still need a device test.
-- AVB uses AOSP test keys and disabled verification for unlocked devices; replace the test
-  keys before distributing production builds.
+- The stock vendor policy is version 31 while LineageOS 19.1 platform policy is version 32; runtime fallback and vendor HAL loading are being tuned.
+- AVB uses AOSP test keys and disabled verification for unlocked devices; replace the test keys before distributing production builds.

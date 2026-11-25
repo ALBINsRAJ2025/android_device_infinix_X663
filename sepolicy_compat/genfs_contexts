@@ -1,1 +1,0 @@
-genfscon sysfs /module/musb_hdrc u:object_r:sysfs_android_usb:s0

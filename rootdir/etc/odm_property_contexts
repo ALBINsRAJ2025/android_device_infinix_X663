@@ -1,8 +1,0 @@
-# SPDX-License-Identifier: Apache-2.0
-
-# Vendor property contexts
-ro.netflix.bsp_rev                          u:object_r:vendor_default_prop:s0
-persist.adb.nonblocking_ffs                 u:object_r:vendor_default_prop:s0
-ro.virtual_ab.userspace.snapshots.enabled   u:object_r:virtual_ab_prop:s0
-ro.product.freezer                          u:object_r:vendor_default_prop:s0
-ro.mtk_cam_stereo_camera_support            u:object_r:vendor_mtk_camera_prop:s0
