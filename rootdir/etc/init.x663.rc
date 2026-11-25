@@ -5,6 +5,7 @@ on early-init
     setprop ro.soc.model MT6768
 
 on post-fs
+    exec_background - system system -- /vendor/bin/chipinfo
     mkdir /mnt/vendor/persist/mcRegistry 0771 system system
     start mobicore
     class_start early_hal
