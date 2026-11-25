@@ -1,5 +1,4 @@
 # SPDX-License-Identifier: Apache-2.0
-# First-boot debug logging
 
 service x663-logd /system/bin/sh /system/bin/x663-logd.sh
     class core
@@ -47,11 +46,16 @@ on post-fs
     setprop vendor.usb.acm_port1 ""
     setprop vendor.usb.acm_enable 0
     setprop vendor.usb.clear_port 1
+    exec_background - system system -- /vendor/bin/chipinfo
+    setprop sys.usb.config adb
 
 on post-fs-data
     start x663-logmirror
 
-on property:apexd.status=activated && property:ro.debuggable=1
+on property:sys.usb.configfs=1 && property:ro.debuggable=1
+    setprop sys.usb.config adb
+
+on property:ro.debuggable=1
     setprop sys.usb.config adb
 
 on property:sys.boot_completed=1
