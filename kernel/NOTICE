@@ -1,0 +1,13 @@
+Infinix Note 11 (X663) kernel tree
+Copyright (C) 2026 ALBINsRAJ2025
+
+The extracted `defconfig` is licensed under GPL-2.0-only.  See LICENSE.
+
+The prebuilt `Image.gz`, `dtb/mt6768.dtb` and `dtbo.img` are stock binaries
+from the Infinix X663 firmware.  They were not authored by this project and
+are not relicensed here.  The Linux kernel is distributed under GPL-2.0; the
+corresponding kernel source is not included in this tree.  Obtain it from the
+manufacturer's open-source release if available.
+
+This tree contains no vendor image.  The vendor partition is built from
+vendor/infinix/X663/proprietary.

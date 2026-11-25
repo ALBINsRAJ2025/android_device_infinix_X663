@@ -1,0 +1,11 @@
+# SPDX-License-Identifier: Apache-2.0
+
+# Init and vendor permissions
+type tranfs_block_device, dev_type;
+type proc_ppm, fs_type, proc_type;
+
+allow init tranfs_block_device:lnk_file { relabelto getattr };
+allow vendor_init proc_ppm:file rw_file_perms;
+get_prop(vendor_init, system_prop)
+get_prop(vendor_init, vts_status_prop)
+allow hal_bootctl_default metadata_file:dir search;

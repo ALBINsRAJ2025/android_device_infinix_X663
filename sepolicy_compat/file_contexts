@@ -1,0 +1,27 @@
+# Keymaster HAL
+/(vendor|system/vendor)/bin/hw/android\.hardware\.keymaster@3\.0-service\.trustonic u:object_r:hal_keymaster_default_exec:s0
+/(vendor|system/vendor)/bin/hw/android\.hardware\.keymaster@4\.0-service\.trustonic u:object_r:hal_keymaster_default_exec:s0
+/(vendor|system/vendor)/bin/hw/android\.hardware\.keymaster@4\.1-service\.trustonic u:object_r:hal_keymaster_default_exec:s0
+/(vendor|system/vendor)/bin/hw/android\.hardware\.keymaster@3\.0-service\.trusty u:object_r:hal_keymaster_default_exec:s0
+/(vendor|system/vendor)/bin/hw/android\.hardware\.keymaster@4\.0-service\.mtee u:object_r:hal_keymaster_default_exec:s0
+/(vendor|system/vendor)/bin/hw/android\.hardware\.keymaster@4\.1-service\.mtee u:object_r:hal_keymaster_default_exec:s0
+/(vendor|system/vendor)/bin/hw/android\.hardware\.keymaster@4\.0-service\.trustkernel u:object_r:hal_keymaster_default_exec:s0
+/(vendor|system/vendor)/bin/hw/android\.hardware\.keymaster@4\.1-service\.trustkernel u:object_r:hal_keymaster_default_exec:s0
+/(vendor|system/vendor)/bin/hw/android\.hardware\.keymaster@4\.0-service\.beanpod        u:object_r:hal_keymaster_default_exec:s0
+/(vendor|system/vendor)/bin/hw/android\.hardware\.keymaster@4\.0-service\.beanpod\.lite  u:object_r:hal_keymaster_default_exec:s0
+/(vendor|system/vendor)/bin/hw/android\.hardware\.keymaster@4\.1-service\.beanpod        u:object_r:hal_keymaster_default_exec:s0
+/(vendor|system/vendor)/bin/hw/android\.hardware\.keymaster@4\.1-service\.beanpod\.lite  u:object_r:hal_keymaster_default_exec:s0
+
+# Vendor HALs
+/(vendor|system/vendor)/bin/hw/vendor\.silead\.hardware\.fingerprintext@1\.0-service u:object_r:hal_fingerprint_default_exec:s0
+/(vendor|system/vendor)/bin/hw/android\.hardware\.graphics\.allocator@4\.0-service-mediatek u:object_r:hal_graphics_allocator_default_exec:s0
+/(vendor|system/vendor)/bin/hw/android\.hardware\.thermal@2\.0-service\.mtk u:object_r:hal_thermal_default_exec:s0
+/(vendor|system/vendor)/bin/hw/android\.hardware\.vibrator-service\.mediatek u:object_r:hal_vibrator_default_exec:s0
+
+# Trustonic TEE
+/(vendor|system/vendor)/bin/mcDriverDaemon u:object_r:mobicore_exec:s0
+/(vendor|system/vendor)/app/mcRegistry(/.*)? u:object_r:mobicore_vendor_file:s0
+/data/vendor/mcRegistry(/.*)? u:object_r:mobicore_data_file:s0
+/dev/mobicore u:object_r:mobicore_admin_device:s0
+/dev/mobicore-user u:object_r:mobicore_user_device:s0
+/dev/t-base-tui u:object_r:mobicore_tui_device:s0
