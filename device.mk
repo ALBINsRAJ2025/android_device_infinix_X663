@@ -58,10 +58,6 @@ PRODUCT_PACKAGES_DEBUG += \
 PRODUCT_PACKAGES += \
     fastbootd
 
-# Recovery test key for sideload verification
-PRODUCT_EXTRA_RECOVERY_KEYS += \
-    build/make/target/product/security/testkey
-
 # Recovery passthrough HALs
 PRODUCT_PACKAGES += \
     android.hardware.boot@1.2-impl.recovery \
