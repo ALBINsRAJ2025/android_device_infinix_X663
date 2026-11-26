@@ -5,6 +5,7 @@
 LOCAL_PATH := $(call my-dir)
 
 X663_INIT_SRC := $(TOPDIR)vendor/infinix/X663/proprietary/etc/init/hw
+X663_INIT_OUT ?= $(PRODUCT_OUT)/obj/X663-INIT
 X663_INIT_RC := init.mt6768.rc factory_init.rc meta_init.rc
 
 define x663-filter-init-rc

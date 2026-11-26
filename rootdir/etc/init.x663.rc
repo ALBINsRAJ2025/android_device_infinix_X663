@@ -5,11 +5,18 @@ on early-init
     setprop ro.soc.model MT6768
 
 on post-fs
+    chown system system /mnt/vendor/persist
+    chmod 0771 /mnt/vendor/persist
+    restorecon /mnt/vendor/persist
     mkdir /mnt/vendor/persist/mcRegistry 0771 system system
     start mobicore
     class_start early_hal
     start vendor.keymaster-4-1-trustonic
     start vendor.gatekeeper-1-0
+
+on post-fs-data
+    mkdir /data/vendor/key_provisioning 0771 system system
+    mkdir /data/vendor/mcRegistry 0775 system system
 
 on late-fs
     start mobicore

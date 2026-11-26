@@ -3,6 +3,7 @@
 # device.mk - Infinix Note 11 (X663)
 
 LOCAL_PATH := device/infinix/X663
+X663_INIT_OUT := $(PRODUCT_OUT)/obj/X663-INIT
 
 # Stock vendor payload
 $(call inherit-product, vendor/infinix/X663/X663-vendor.mk)
@@ -16,15 +17,25 @@ PRODUCT_COPY_FILES := $(filter-out \
     vendor/infinix/X663/proprietary/odm/etc/group:$(TARGET_COPY_OUT_VENDOR)/odm/etc/group \
     frameworks/native/data/etc/handheld_core_hardware.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/handheld_core_hardware.xml \
     vendor/infinix/X663/proprietary/overlay/FrameworkResOverlay/FrameworkResOverlay.apk:$(TARGET_COPY_OUT_VENDOR)/overlay/FrameworkResOverlay/FrameworkResOverlay.apk \
+    vendor/infinix/X663/proprietary/lib64/libtinycompress.so:$(TARGET_COPY_OUT_VENDOR)/lib64/libtinycompress.so \
+    vendor/infinix/X663/proprietary/etc/init/android.hardware.keymaster@4.1-service.trustonic.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/android.hardware.keymaster@4.1-service.trustonic.rc \
+    vendor/infinix/X663/proprietary/etc/init/trustonic.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/trustonic.rc \
+    vendor/infinix/X663/proprietary/etc/init/hw/init.mt6768.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/hw/init.mt6768.rc \
+    vendor/infinix/X663/proprietary/etc/init/hw/factory_init.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/hw/factory_init.rc \
+    vendor/infinix/X663/proprietary/etc/init/hw/meta_init.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/hw/meta_init.rc \
     ,$(PRODUCT_COPY_FILES))
-
 
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/rootdir/etc/fstab.mt6768:$(TARGET_COPY_OUT_VENDOR)/etc/fstab.mt6768 \
     $(LOCAL_PATH)/rootdir/etc/init.x663.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/init.x663.rc \
     $(LOCAL_PATH)/rootdir/etc/chipinfo_init.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/chipinfo_init.rc \
     $(LOCAL_PATH)/rootdir/etc/odm_sepolicy.cil:$(TARGET_COPY_OUT_VENDOR)/odm/etc/selinux/odm_sepolicy.cil \
-    $(LOCAL_PATH)/rootdir/etc/odm_property_contexts:$(TARGET_COPY_OUT_VENDOR)/odm/etc/selinux/odm_property_contexts
+    $(LOCAL_PATH)/rootdir/etc/odm_property_contexts:$(TARGET_COPY_OUT_VENDOR)/odm/etc/selinux/odm_property_contexts \
+    $(LOCAL_PATH)/rootdir/etc/android.hardware.keymaster@4.1-service.trustonic.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/android.hardware.keymaster@4.1-service.trustonic.rc \
+    $(LOCAL_PATH)/rootdir/etc/trustonic.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/trustonic.rc \
+    $(X663_INIT_OUT)/init.mt6768.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/hw/init.mt6768.rc \
+    $(X663_INIT_OUT)/factory_init.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/hw/factory_init.rc \
+    $(X663_INIT_OUT)/meta_init.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/hw/meta_init.rc
 
 # Framework resource overlay
 DEVICE_PACKAGE_OVERLAYS += $(LOCAL_PATH)/overlay
@@ -33,73 +44,67 @@ DEVICE_PACKAGE_OVERLAYS += $(LOCAL_PATH)/overlay
 PRODUCT_USE_DYNAMIC_PARTITIONS := true
 PRODUCT_BUILD_SUPER_PARTITION := true
 $(call inherit-product, $(SRC_TARGET_DIR)/product/virtual_ab_ota/launch.mk)
-$(call inherit-product, $(SRC_TARGET_DIR)/product/virtual_ab_ota/compression_retrofit.mk)
 
-# Updatable APEX
-$(call inherit-product, $(SRC_TARGET_DIR)/product/updatable_apex.mk)
+# Dynamic partition sizes
+PRODUCT_BUILD_PRODUCT_IMAGE := true
+PRODUCT_BUILD_SYSTEM_IMAGE := true
+PRODUCT_BUILD_SYSTEM_EXT_IMAGE := true
+PRODUCT_BUILD_VENDOR_IMAGE := true
+PRODUCT_BUILD_ODM_IMAGE := false
 
-# A/B OTA
-AB_OTA_POSTINSTALL_CONFIG += \
-    RUN_POSTINSTALL_system=true \
-    POSTINSTALL_PATH_system=system/bin/otapreopt_script \
-    FILESYSTEM_TYPE_system=ext4 \
-    POSTINSTALL_OPTIONAL_system=true
-
+# Fastbootd
 PRODUCT_PACKAGES += \
+    android.hardware.fastboot@1.1-impl-mock.recovery \
+    fastbootd
+
+# Update engine
+PRODUCT_PACKAGES += \
+    checkpoint_gc \
     otapreopt_script \
     update_engine \
     update_engine_sideload \
     update_verifier
 
-PRODUCT_PACKAGES_DEBUG += \
-    update_engine_client
-
-# Userspace fastboot
+# Recovery tools
 PRODUCT_PACKAGES += \
-    fastbootd
+    recovery_ui \
+    e2fsck.recovery \
+    fsck.f2fs.recovery \
+    make_f2fs.recovery \
+    tune2fs.recovery \
+    wait_for_key \
+    touch_test
 
-# Recovery passthrough HALs
+# Sideload and ramdisk binaries
 PRODUCT_PACKAGES += \
-    android.hardware.boot@1.2-impl.recovery \
-    android.hardware.fastboot@1.1-impl-mock \
-    android.hardware.health@2.1-impl.recovery
-
-PRODUCT_SHIPPING_API_LEVEL := 30
-PRODUCT_CHARACTERISTICS := phone
-
-ifeq ($(PLATFORM_SDK_VERSION),32)
-PRODUCT_EXTRA_VNDK_VERSIONS := 31
-PRODUCT_VENDOR_PROPERTIES += ro.vndk.version=31
-endif
-
-# SoC model properties
-PRODUCT_VENDOR_PROPERTIES += \
-    ro.vendor.soc.manufacturer=Mediatek \
-    ro.vendor.soc.model=MT6768 \
-    ro.vendor.soc.model_ready=1
-
-PRODUCT_PRECOMPILED_SEPOLICY := false
-
-# Recovery-as-boot fstab
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/rootdir/etc/fstab.mt6768:$(TARGET_COPY_OUT_RECOVERY)/root/first_stage_ramdisk/fstab.mt6768
-
-# Stock carrier APN database
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/configs/apns-conf.xml:$(TARGET_COPY_OUT_PRODUCT)/etc/apns-conf.xml
-
-# Recovery ramdisk
-PRODUCT_PACKAGES += \
-    init.recovery.mt6768.rc \
+    libhardware \
     mtk_plpath_utils \
+    mcDriverDaemon \
     mtk-plpath-utils.rc \
-    mtk-usb.rc \
-    ueventd.mt6768.rc
+    mtk-usb.rc
 
-ifeq ($(wildcard vendor/lineage/build/tasks/kernel.mk),)
-PRODUCT_COPY_FILES += \
-    $(DEVICE_PATH)/kernel/Image.gz:kernel
-endif
+# Overlays
+PRODUCT_PACKAGES += \
+    CarrierConfigResCommon \
+    LineageSDKOverlay \
+    LineageSettingsOverlay \
+    SettingsProviderOverlay \
+    TelephonyOverlay \
+    WifiOverlay
 
-# First-boot debug logging
-include $(LOCAL_PATH)/debug/debug-bootloop.mk
+# Lineage health
+PRODUCT_PACKAGES += \
+    android.hardware.health@2.1-impl-lineage \
+    android.hardware.health@2.1-service
+
+# Lights
+PRODUCT_PACKAGES += \
+    android.hardware.lights-service.lineage
+
+# Touch
+PRODUCT_PACKAGES += \
+    libinput \
+    libhidlbase
+
+# Lineage namespaces
+PRODUCT_SOONG_NAMESPACES += $(LOCAL_PATH)

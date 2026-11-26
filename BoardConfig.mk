@@ -194,26 +194,3 @@ BOARD_VENDOR_SEPOLICY_DIRS := $(X663_SEPOLICY_DIRS) $(DEVICE_PATH)/sepolicy_comp
 
 # Vendor image
 VENDOR_SECURITY_PATCH := 2023-09-05
-
-# Stock copies that collide with a built module
-PRODUCT_COPY_FILES := $(filter-out \
-    vendor/infinix/X663/proprietary/lib64/libtinycompress.so:$(_vendor_path_placeholder)/lib64/libtinycompress.so \
-    ,$(PRODUCT_COPY_FILES))
-
-# Stock init scripts rewritten for init 19.1
-X663_INIT_OUT := $(OUT_DIR)/target/product/$(TARGET_DEVICE)/obj/X663-INIT
-
-PRODUCT_COPY_FILES := $(filter-out \
-    vendor/infinix/X663/proprietary/etc/init/android.hardware.keymaster@4.1-service.trustonic.rc:$(_vendor_path_placeholder)/etc/init/android.hardware.keymaster@4.1-service.trustonic.rc \
-    vendor/infinix/X663/proprietary/etc/init/trustonic.rc:$(_vendor_path_placeholder)/etc/init/trustonic.rc \
-    vendor/infinix/X663/proprietary/etc/init/hw/init.mt6768.rc:$(_vendor_path_placeholder)/etc/init/hw/init.mt6768.rc \
-    vendor/infinix/X663/proprietary/etc/init/hw/factory_init.rc:$(_vendor_path_placeholder)/etc/init/hw/factory_init.rc \
-    vendor/infinix/X663/proprietary/etc/init/hw/meta_init.rc:$(_vendor_path_placeholder)/etc/init/hw/meta_init.rc \
-    ,$(PRODUCT_COPY_FILES))
-
-PRODUCT_COPY_FILES += \
-    $(DEVICE_PATH)/rootdir/etc/android.hardware.keymaster@4.1-service.trustonic.rc:$(_vendor_path_placeholder)/etc/init/android.hardware.keymaster@4.1-service.trustonic.rc \
-    $(DEVICE_PATH)/rootdir/etc/trustonic.rc:$(_vendor_path_placeholder)/etc/init/trustonic.rc \
-    $(X663_INIT_OUT)/init.mt6768.rc:$(_vendor_path_placeholder)/etc/init/hw/init.mt6768.rc \
-    $(X663_INIT_OUT)/factory_init.rc:$(_vendor_path_placeholder)/etc/init/hw/factory_init.rc \
-    $(X663_INIT_OUT)/meta_init.rc:$(_vendor_path_placeholder)/etc/init/hw/meta_init.rc
