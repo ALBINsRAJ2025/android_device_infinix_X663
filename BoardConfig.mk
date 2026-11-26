@@ -53,7 +53,10 @@ BOARD_DTB_OFFSET := 0x0bc08000
 
 BOARD_KERNEL_CMDLINE := bootopt=64S3,32N2,64N2 androidboot.hardware=mt6768 androidboot.init_fatal_reboot_target=recovery
 
-TARGET_KERNEL_SOURCE :=
+TARGET_KERNEL_VERSION := 4.19
+TARGET_KERNEL_SOURCE := device/infinix/X663/kernel-headers
+TARGET_FORCE_PREBUILT_KERNEL := true
+TARGET_KERNEL_CONFIG := defconfig
 TARGET_PREBUILT_KERNEL := $(DEVICE_PATH)/kernel/Image.gz
 BOARD_PREBUILT_DTBIMAGE_DIR := $(DEVICE_PATH)/kernel/dtb
 BOARD_INCLUDE_DTB_IN_BOOTIMG := true
