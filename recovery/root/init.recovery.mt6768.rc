@@ -19,6 +19,7 @@ on post-fs
 
     exec u:r:recovery:s0 root root -- /system/bin/mtk_plpath_utils
 
+    mount ext4 /dev/block/by-name/md_udc /metadata noatime nosuid nodev wait
     restorecon_recursive /metadata
     mkdir /metadata/vold 0700 root root
     mkdir /metadata/vold/metadata_encryption 0700 root root
@@ -28,6 +29,7 @@ on post-fs
     start mobicore
 
 on property:sys.usb.config=sideload
+    mount ext4 /dev/block/by-name/md_udc /metadata noatime nosuid nodev wait
     restorecon_recursive /metadata
     mkdir /metadata/vold 0700 root root
     mkdir /metadata/vold/metadata_encryption 0700 root root
