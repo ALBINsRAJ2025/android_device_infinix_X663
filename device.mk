@@ -3,7 +3,7 @@
 # device.mk - Infinix Note 11 (X663)
 
 LOCAL_PATH := device/infinix/X663
-X663_INIT_OUT := $(PRODUCT_OUT)/obj/X663-INIT
+X663_INIT_OUT := $(if $(OUT_DIR),$(OUT_DIR),out)/target/product/$(if $(TARGET_DEVICE),$(TARGET_DEVICE),X663)/obj/X663-INIT
 
 # Stock vendor payload
 $(call inherit-product, vendor/infinix/X663/X663-vendor.mk)
