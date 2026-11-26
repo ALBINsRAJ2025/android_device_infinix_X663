@@ -8,23 +8,6 @@ X663_INIT_OUT := $(if $(OUT_DIR),$(OUT_DIR),out)/target/product/$(if $(TARGET_DE
 # Stock vendor payload
 $(call inherit-product, vendor/infinix/X663/X663-vendor.mk)
 
-PRODUCT_COPY_FILES := $(filter-out \
-    vendor/infinix/X663/proprietary/etc/fs_config_files:$(TARGET_COPY_OUT_VENDOR)/etc/fs_config_files \
-    vendor/infinix/X663/proprietary/etc/fs_config_dirs:$(TARGET_COPY_OUT_VENDOR)/etc/fs_config_dirs \
-    vendor/infinix/X663/proprietary/etc/passwd:$(TARGET_COPY_OUT_VENDOR)/etc/passwd \
-    vendor/infinix/X663/proprietary/etc/group:$(TARGET_COPY_OUT_VENDOR)/etc/group \
-    vendor/infinix/X663/proprietary/odm/etc/passwd:$(TARGET_COPY_OUT_VENDOR)/odm/etc/passwd \
-    vendor/infinix/X663/proprietary/odm/etc/group:$(TARGET_COPY_OUT_VENDOR)/odm/etc/group \
-    frameworks/native/data/etc/handheld_core_hardware.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/handheld_core_hardware.xml \
-    vendor/infinix/X663/proprietary/overlay/FrameworkResOverlay/FrameworkResOverlay.apk:$(TARGET_COPY_OUT_VENDOR)/overlay/FrameworkResOverlay/FrameworkResOverlay.apk \
-    vendor/infinix/X663/proprietary/lib64/libtinycompress.so:$(TARGET_COPY_OUT_VENDOR)/lib64/libtinycompress.so \
-    vendor/infinix/X663/proprietary/etc/init/android.hardware.keymaster@4.1-service.trustonic.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/android.hardware.keymaster@4.1-service.trustonic.rc \
-    vendor/infinix/X663/proprietary/etc/init/trustonic.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/trustonic.rc \
-    vendor/infinix/X663/proprietary/etc/init/hw/init.mt6768.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/hw/init.mt6768.rc \
-    vendor/infinix/X663/proprietary/etc/init/hw/factory_init.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/hw/factory_init.rc \
-    vendor/infinix/X663/proprietary/etc/init/hw/meta_init.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/hw/meta_init.rc \
-    ,$(PRODUCT_COPY_FILES))
-
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/rootdir/etc/fstab.mt6768:$(TARGET_COPY_OUT_VENDOR)/etc/fstab.mt6768 \
     $(LOCAL_PATH)/rootdir/etc/init.x663.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/init.x663.rc \
