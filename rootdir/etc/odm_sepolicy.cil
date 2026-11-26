@@ -1,1 +1,6 @@
 (genfscon sysfs "/module/musb_hdrc" (u object_r sysfs_android_usb ((s0) (s0))))
+(allow init vendor_mtk_soc_prop (property_service (set)))
+(allow init vendor_mtk_soc_prop (file (read getattr map open)))
+(allow vendor_init vendor_mtk_soc_prop (property_service (set)))
+(allow vendor_init vendor_mtk_soc_prop (file (read getattr map open)))
+(allow hal_bootctl_default unlabeled (dir (search)))
