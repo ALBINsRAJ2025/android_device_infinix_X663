@@ -27,67 +27,74 @@ DEVICE_PACKAGE_OVERLAYS += $(LOCAL_PATH)/overlay
 PRODUCT_USE_DYNAMIC_PARTITIONS := true
 PRODUCT_BUILD_SUPER_PARTITION := true
 $(call inherit-product, $(SRC_TARGET_DIR)/product/virtual_ab_ota/launch.mk)
+$(call inherit-product, $(SRC_TARGET_DIR)/product/virtual_ab_ota/compression_retrofit.mk)
 
-# Dynamic partition sizes
-PRODUCT_BUILD_PRODUCT_IMAGE := true
-PRODUCT_BUILD_SYSTEM_IMAGE := true
-PRODUCT_BUILD_SYSTEM_EXT_IMAGE := true
-PRODUCT_BUILD_VENDOR_IMAGE := true
-PRODUCT_BUILD_ODM_IMAGE := false
+# Updatable APEX
+$(call inherit-product, $(SRC_TARGET_DIR)/product/updatable_apex.mk)
 
-# Fastbootd
+# A/B OTA
+AB_OTA_POSTINSTALL_CONFIG += \
+    RUN_POSTINSTALL_system=true \
+    POSTINSTALL_PATH_system=system/bin/otapreopt_script \
+    FILESYSTEM_TYPE_system=ext4 \
+    POSTINSTALL_OPTIONAL_system=true
+
 PRODUCT_PACKAGES += \
-    android.hardware.fastboot@1.1-impl-mock.recovery \
-    fastbootd
-
-# Update engine
-PRODUCT_PACKAGES += \
-    checkpoint_gc \
     otapreopt_script \
     update_engine \
     update_engine_sideload \
     update_verifier
 
-# Recovery tools
-PRODUCT_PACKAGES += \
-    recovery_ui \
-    e2fsck.recovery \
-    fsck.f2fs.recovery \
-    make_f2fs.recovery \
-    tune2fs.recovery \
-    wait_for_key \
-    touch_test
+PRODUCT_PACKAGES_DEBUG += \
+    update_engine_client
 
-# Sideload and ramdisk binaries
+# Userspace fastboot
 PRODUCT_PACKAGES += \
-    libhardware \
-    mtk_plpath_utils \
+    fastbootd
+
+# Recovery passthrough HALs
+PRODUCT_PACKAGES += \
+    android.hardware.boot@1.2-impl.recovery \
+    android.hardware.fastboot@1.1-impl-mock \
+    android.hardware.health@2.1-impl.recovery
+
+PRODUCT_SHIPPING_API_LEVEL := 30
+PRODUCT_CHARACTERISTICS := phone
+
+ifeq ($(PLATFORM_SDK_VERSION),32)
+PRODUCT_EXTRA_VNDK_VERSIONS := 31
+PRODUCT_VENDOR_PROPERTIES += ro.vndk.version=31
+endif
+
+# SoC model properties
+PRODUCT_VENDOR_PROPERTIES += \
+    ro.vendor.soc.manufacturer=Mediatek \
+    ro.vendor.soc.model=MT6768 \
+    ro.vendor.soc.model_ready=1
+
+PRODUCT_PRECOMPILED_SEPOLICY := false
+
+# Recovery-as-boot fstab
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/rootdir/etc/fstab.mt6768:$(TARGET_COPY_OUT_RECOVERY)/root/first_stage_ramdisk/fstab.mt6768
+
+# Stock carrier APN database
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/configs/apns-conf.xml:$(TARGET_COPY_OUT_PRODUCT)/etc/apns-conf.xml
+
+# Recovery ramdisk
+PRODUCT_PACKAGES += \
+    init.recovery.mt6768.rc \
     mcDriverDaemon \
+    mtk_plpath_utils \
     mtk-plpath-utils.rc \
-    mtk-usb.rc
+    mtk-usb.rc \
+    ueventd.mt6768.rc
 
-# Overlays
-PRODUCT_PACKAGES += \
-    CarrierConfigResCommon \
-    LineageSDKOverlay \
-    LineageSettingsOverlay \
-    SettingsProviderOverlay \
-    TelephonyOverlay \
-    WifiOverlay
+ifeq ($(wildcard vendor/lineage/build/tasks/kernel.mk),)
+PRODUCT_COPY_FILES += \
+    $(DEVICE_PATH)/kernel/Image.gz:kernel
+endif
 
-# Lineage health
-PRODUCT_PACKAGES += \
-    android.hardware.health@2.1-impl-lineage \
-    android.hardware.health@2.1-service
-
-# Lights
-PRODUCT_PACKAGES += \
-    android.hardware.lights-service.lineage
-
-# Touch
-PRODUCT_PACKAGES += \
-    libinput \
-    libhidlbase
-
-# Lineage namespaces
-PRODUCT_SOONG_NAMESPACES += $(LOCAL_PATH)
+# First-boot debug logging
+include $(LOCAL_PATH)/debug/debug-bootloop.mk
