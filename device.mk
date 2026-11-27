@@ -54,9 +54,15 @@ PRODUCT_PACKAGES += \
 
 # Recovery passthrough HALs
 PRODUCT_PACKAGES += \
-    android.hardware.boot@1.2-impl.recovery \
+    android.hardware.boot@1.2.recovery \
     android.hardware.fastboot@1.1-impl-mock \
-    android.hardware.health@2.1-impl.recovery
+    android.hardware.health@2.1-impl.recovery \
+    libhardware.recovery
+
+# Stock MTK recovery boot control
+PRODUCT_COPY_FILES += \
+    vendor/infinix/X663/proprietary/lib64/hw/android.hardware.boot@1.0-impl-1.2-mtkimpl.so:$(TARGET_COPY_OUT_RECOVERY)/root/system/lib64/hw/android.hardware.boot@1.0-impl-1.2-mtkimpl.so \
+    vendor/infinix/X663/proprietary/lib64/libmtk_bsg.so:$(TARGET_COPY_OUT_RECOVERY)/root/system/lib64/libmtk_bsg.so
 
 PRODUCT_SHIPPING_API_LEVEL := 30
 PRODUCT_CHARACTERISTICS := phone
