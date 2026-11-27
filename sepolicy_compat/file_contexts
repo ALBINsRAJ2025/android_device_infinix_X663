@@ -25,3 +25,6 @@
 /dev/mobicore u:object_r:mobicore_admin_device:s0
 /dev/mobicore-user u:object_r:mobicore_user_device:s0
 /dev/t-base-tui u:object_r:mobicore_tui_device:s0
+
+# Transsion partition
+/tranfs(/.*)? u:object_r:tranfs_file:s0

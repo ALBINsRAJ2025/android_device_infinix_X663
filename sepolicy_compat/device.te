@@ -2,6 +2,7 @@
 
 # Init and vendor permissions
 type tranfs_block_device, dev_type;
+type tranfs_file, file_type, mlstrustedobject;
 type proc_ppm, fs_type, proc_type;
 
 allow init tranfs_block_device:lnk_file { relabelto getattr };
