@@ -33,7 +33,7 @@ on init
     setprop sys.usb.controller "musb-hdrc"
     setprop vendor.usb.controller "musb-hdrc"
 
-on fs
+on early-fs
     start x663-logd
 
 on post-fs
